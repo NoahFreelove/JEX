@@ -13,8 +13,6 @@ public class Main {
 
         JEX instance = JEX.startEngine(config);
 
-        new GameObject().getRenderer();
-
         //Log.print(new BufferedFile(new Filepath("file.txt", FilepathType.ClassLoader),true).getDataAsString());
     }
 }

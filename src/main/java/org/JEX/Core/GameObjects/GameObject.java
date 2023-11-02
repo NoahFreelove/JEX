@@ -13,6 +13,14 @@ public final class GameObject {
     private boolean has_renderer;
     private Renderer renderer;
 
+    private String name = "GameObject";
+    private String tag = "untagged";
+    private int mem_ID;
+
+    public GameObject() {
+        mem_ID = this.hashCode();
+
+    }
 
     public boolean hasRenderer() {
         return has_renderer;

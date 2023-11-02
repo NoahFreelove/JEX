@@ -1,6 +1,7 @@
 package org.JEX.Core.Engine.FunctionPipelines;
 
 import org.JEX.Core.Engine.JEX;
+import org.JEX.Core.Levels.Level;
 
 public final class DefaultFunctionPipeline implements FunctionPipeline {
     public DefaultFunctionPipeline(){
@@ -8,7 +9,13 @@ public final class DefaultFunctionPipeline implements FunctionPipeline {
     }
 
     @Override
-    public void game_update(float delta_time, boolean is_render_update) {
+    public void level_start(Level activeLevel) {
+        activeLevel.start();
+    }
+
+    @Override
+    public void game_update(Level activeLevel, float delta_time, boolean is_render_update) {
+        activeLevel.update(delta_time);
 
         if(is_render_update){
             JEX.getInstance().triggerRenderPipeline();
@@ -19,5 +26,10 @@ public final class DefaultFunctionPipeline implements FunctionPipeline {
     @Override
     public void endFrame() {
         JEX.getInstance().triggerEngineRunnables();
+    }
+
+    @Override
+    public void on_level_unload(Level oldLevel) {
+        oldLevel.unload();
     }
 }

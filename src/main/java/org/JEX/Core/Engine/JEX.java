@@ -5,6 +5,8 @@ import org.JEX.Core.Configs.JEXConfig;
 import org.JEX.Core.Engine.FunctionPipelines.FunctionPipeline;
 import org.JEX.Core.Engine.Window.GLFWWindow;
 import org.JEX.Core.Engine.Window.WindowCreationResult;
+import org.JEX.Core.Input.KeyboardHandler;
+import org.JEX.Core.Input.MouseHandler;
 import org.JEX.Core.Levels.Level;
 import org.JEX.Logs.Exceptions.ArgumentExceptions.NullArgumentException;
 import org.JEX.Logs.Exceptions.EngineSpecificExceptions.EngineNotYetStartedException;
@@ -42,6 +44,7 @@ public class JEX {
     private Level active_level;
 
     private static final ThreadLocal<Boolean> is_engine_thread = new ThreadLocal<>();
+    private boolean new_level = false;
 
     protected JEX(JEXConfig config){
         engine_instance = this;
@@ -104,7 +107,6 @@ public class JEX {
 
     @EngineThread
     private void engine_init(){
-        //TODO: Setup input here
 
         glfwMakeContextCurrent(engine_instance.getHandle());
         glfwSetWindowAttrib(window.getHandle(), GLFW_RESIZABLE, (active_config.resizeable()? 1:0));
@@ -131,22 +133,57 @@ public class JEX {
         window.createCapabilities();
         glfwShowWindow(getHandle());
 
+        config_input();
+
+    }
+
+    private void config_input() {
+        glfwSetKeyCallback(getHandle(), (window, key, scancode, action, mods) -> {
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+                glfwSetWindowShouldClose(window, true);
+
+            if(action == GLFW_PRESS){
+                KeyboardHandler.onKeyPress(key);
+            }
+            else if(action == GLFW_RELEASE){
+                KeyboardHandler.onKeyRelease(key);
+            }
+            else if(action == GLFW_REPEAT){
+                KeyboardHandler.onKeyPress(key);
+            }
+        });
+
+        glfwSetMouseButtonCallback(getHandle(), (window, button, action, mods) -> {
+            if(action == GLFW_PRESS){
+                MouseHandler.onMousePress(button);
+            }
+            else if(action == GLFW_RELEASE) {
+                MouseHandler.onMouseRelease(button);
+            }
+        });
+        // Position callback
+        glfwSetCursorPosCallback(getHandle(), (window, xpos, ypos) -> {
+            MouseHandler.updatePosition((float) xpos, (float) ypos);
+        });
     }
 
     @EngineThread
     public void game_update(float delta_time, boolean renderUpdate){
         if(tmp_update_pipeline != null)
         {
-            if(function_pipeline != null)
-                function_pipeline.on_unload();
             function_pipeline = tmp_update_pipeline;
-            function_pipeline.on_load();
             tmp_update_pipeline = null;
         }
-        if(function_pipeline == null)
+        if(function_pipeline == null || active_level == null)
             return;
 
-        function_pipeline.game_update(delta_time, renderUpdate);
+        if(new_level)
+        {
+            new_level = false;
+            this.function_pipeline.level_start(active_level);
+        }
+
+        function_pipeline.game_update(active_level, delta_time, renderUpdate);
     }
 
     public void triggerEngineRunnables(){
@@ -230,5 +267,12 @@ public class JEX {
 
     public void endFrame() {
         function_pipeline.endFrame();
+    }
+
+    public void setActive_level(Level active_level) {
+        this.function_pipeline.on_level_unload(this.active_level);
+        this.active_level = active_level;
+        this.function_pipeline.on_level_load(active_level);
+        new_level = true;
     }
 }

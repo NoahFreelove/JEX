@@ -13,13 +13,14 @@ public class World extends Level{
     }
 
     @Override
-    public GameObject[] getGameObjects() {
-        return new GameObject[0];
+    public LevelIterator<GameObject> getGameObjects() {
+
+        return new LevelIterator<>(gameObjects_arr);
     }
 
     @Override
-    public Renderer[] getLevelRenderables() {
-        return new Renderer[0];
+    public LevelIterator<Renderer> getLevelRenderables() {
+        return new LevelIterator<>(renderable_arr);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class World extends Level{
     }
 
     @Override
-    public void update() {
+    public void update(float delta_time) {
 
     }
 
@@ -51,6 +52,9 @@ public class World extends Level{
     public void unload() {
 
     }
+
+    @Override
+    public void load(){}
 
     @Override
     public LevelConfig getConfig() {
