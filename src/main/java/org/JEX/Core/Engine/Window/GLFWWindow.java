@@ -4,7 +4,6 @@ import org.JEX.Core.Annotations.EngineThread;
 import org.JEX.Core.Engine.JEX;
 import org.JEX.Logs.Exceptions.GLExceptions.JEXception_GL;
 import org.JEX.Logs.Log;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryUtil;
 
@@ -97,7 +96,7 @@ public class GLFWWindow {
 
     public void createCapabilities() {
 
-        if(JEX.active_config().graphicsAPI() == GraphicsAPI.OPENGL){
+        if(JEX.active_config().graphicsAPI() == GraphicsAPI.OpenGL){
             GLCapabilities caps = GL.createCapabilities();
             GL.setCapabilities(caps);
             GLUtil.setupDebugMessageCallback();
@@ -115,7 +114,7 @@ public class GLFWWindow {
                 );
             }
         }
-        else if (JEX.active_config().graphicsAPI() == GraphicsAPI.VULKAN){
+        else if (JEX.active_config().graphicsAPI() == GraphicsAPI.Vulkan){
 
         }
 
@@ -151,7 +150,6 @@ public class GLFWWindow {
 
             engine.game_update(delta, isRenderUpdate);
 
-            glfwPollEvents();
             glfwSwapBuffers(handle);
             engine.window_update();
 
@@ -160,6 +158,7 @@ public class GLFWWindow {
             delta_millis = (frameEnd - frameStart);
             delta = (float) delta_millis / 1000.0f;
             engine.endFrame();
+            glfwPollEvents();
         }
     }
 

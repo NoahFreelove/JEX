@@ -29,7 +29,7 @@ public class JEX {
     private static JEXConfig active_config = createDefaultConfig();
     protected static JEX engine_instance;
     private static boolean engine_created = false;
-    private volatile boolean running = false;
+    private static volatile boolean running = false;
     private Thread engine_thread;
 
     private CopyOnWriteArrayList<Runnable> engine_thread_runnables = new CopyOnWriteArrayList<>();
@@ -66,7 +66,6 @@ public class JEX {
 
         engine_instance.engine_thread = new Thread(()->{
             GLFWErrorCallback.createPrint(System.err).set();
-
             WindowCreationResult result = engine_instance.create_engine_window(config);
 
             if(engine_instance.window == null || result != WindowCreationResult.GOOD){
@@ -81,7 +80,8 @@ public class JEX {
             engine_instance.engine_init();
 
             is_engine_thread.set(true);
-            engine_instance.running = true;
+            running = true;
+            //EventPoller.pollThread.start();
             engine_instance.window.windowLoop(engine_instance);
         });
 
@@ -276,5 +276,9 @@ public class JEX {
         if(function_pipeline != null)
             this.function_pipeline.on_level_load(active_level);
         new_level = true;
+    }
+
+    public static boolean isRunning(){
+        return running;
     }
 }

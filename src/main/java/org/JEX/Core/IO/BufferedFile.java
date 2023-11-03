@@ -73,4 +73,9 @@ public class BufferedFile {
     public String[] getDataAsLines(){
         return getDataAsString().split("\n");
     }
+
+    public boolean hasLoaded(){
+        return loaded;
+    }
+
 }

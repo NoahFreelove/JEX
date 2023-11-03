@@ -33,7 +33,7 @@ public class JEXConfig {
     private String window_title = "JEX Window";
     private long window_monitor = 0L;
     private long window_share = 0L;
-    private GraphicsAPI graphics_API = GraphicsAPI.OPENGL;
+    private GraphicsAPI graphics_API = GraphicsAPI.OpenGL;
     private boolean vsync = true;
     private boolean resizable = true;
 
@@ -79,13 +79,13 @@ public class JEXConfig {
             }
             else if(varName.equals("graphics_api")){
                 if (varValue.equals("opengl")){
-                    graphics_API = GraphicsAPI.OPENGL;
+                    graphics_API = GraphicsAPI.OpenGL;
                 }
                 else if (varValue.equals("vulkan")){
-                    graphics_API = GraphicsAPI.VULKAN;
+                    graphics_API = GraphicsAPI.Vulkan;
                 }
                 else {
-                    graphics_API = GraphicsAPI.UNKNOWN;
+                    graphics_API = GraphicsAPI.Unknown;
                     Log.error(new JEXception("Unknown graphics API: " + varValue));
                 }
                 continue;

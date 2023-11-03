@@ -1,4 +1,42 @@
 package org.JEX.Rendering.Shaders;
 
-public class ShaderBase {
+import org.JEX.Core.IO.BufferedFile;
+import org.JEX.Core.IO.Filepath;
+import org.JEX.Logs.Exceptions.IOExceptions.DataNotYetLoadedException;
+import org.JEX.Logs.Exceptions.IOExceptions.ResourceDoesntExistException;
+import org.JEX.Logs.Log;
+import org.lwjgl.util.shaderc.Shaderc;
+
+public abstract sealed class ShaderBase permits GLSLShader,SPIRVShader {
+    protected String shaderSourceString;
+    protected final ShaderType type;
+    protected boolean isValid = false;
+
+    public ShaderBase(ShaderType type){
+        this.type = type;
+    }
+
+    abstract void compile();
+
+    public void loadSourceFromFile(Filepath file){
+        if(!file.checkExistence())
+        {
+            Log.error(new ResourceDoesntExistException("Can't load shader source from file which doesn't exist!", "Aborted loading source."));
+            return;
+        }
+        BufferedFile bf = new BufferedFile(file, true);
+        if(!bf.hasLoaded()) {
+            Log.error(new DataNotYetLoadedException("Buffered File was unable to buffer file data when access was attempted.", "Aborted loading source."));
+            return;
+        }
+        shaderSourceString = bf.getDataAsString();
+    }
+
+    public ShaderType getType(){
+        return type;
+    }
+
+    protected abstract void destroy();
+
+    public abstract void enableShader();
 }

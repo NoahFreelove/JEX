@@ -17,6 +17,8 @@ public class GLRenderPipeline implements RenderPipeline {
 
     @Override
     public void render(JEXIterator<Renderer> renderers, LevelConfig config) {
-
+        while (renderers.hasNext()){
+            renderers.next().render(config);
+        }
     }
 }

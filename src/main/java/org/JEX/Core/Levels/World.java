@@ -2,7 +2,6 @@ package org.JEX.Core.Levels;
 
 import org.JEX.Core.Configs.LevelConfig;
 import org.JEX.Core.GameObjects.GameObject;
-import org.JEX.Core.GameObjects.Scripting.Script;
 import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Logs.Exceptions.ArgumentExceptions.NullArgumentException;
 import org.JEX.Logs.Log;
@@ -14,7 +13,7 @@ import java.util.Objects;
 public class World extends Level{
 
     public World(LevelConfig config) {
-        super(config.setType(WorldType.THIRD_DIMENSIONAL));
+        super(config.setType(LevelType.THIRD_DIMENSIONAL));
     }
 
     @Override
@@ -57,17 +56,13 @@ public class World extends Level{
 
     @Override
     public void start() {
-        getGameObjects().forEach(obj -> {
-            obj.getScripts().forEach(Script::start);
-        });
+        getGameObjects().forEach(GameObject::start);
     }
 
     @Override
     public void update(float delta_time) {
         getGameObjects().forEach(obj -> {
-            obj.getScripts().forEach(script->{
-                script.update(delta_time);
-            });
+            obj.update(delta_time);
         });
     }
 

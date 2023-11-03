@@ -1,6 +1,6 @@
 package org.JEX.Core.Levels;
 
-public enum WorldType {
+public enum LevelType {
     SECOND_DIMENSIONAL,
     THIRD_DIMENSIONAL,
 }

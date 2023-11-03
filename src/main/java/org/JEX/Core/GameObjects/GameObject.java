@@ -1,5 +1,7 @@
 package org.JEX.Core.GameObjects;
 
+import org.JEX.Core.GameObjects.Scripting.ILambdaScript;
+import org.JEX.Core.GameObjects.Scripting.LambdaScript;
 import org.JEX.Core.GameObjects.Scripting.Script;
 import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Logs.Exceptions.ArgumentExceptions.JEXception_Argument;
@@ -10,7 +12,7 @@ import org.JEX.Rendering.Renderers.Renderer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public final class GameObject {
+public class GameObject {
     private boolean has_renderer;
     private Renderer renderer;
 
@@ -79,6 +81,9 @@ public final class GameObject {
         this.name_tag = name_tag;
         this.tag = this.name_tag.hashCode();
     }
+    public boolean addScript(ILambdaScript lambdaScript){
+        return addScript(new LambdaScript(lambdaScript));
+    }
 
     public boolean addScript(Script script){
         if(script == null){
@@ -124,5 +129,18 @@ public final class GameObject {
 
     public JEXIterator<Script> getScripts(){
         return new JEXIterator<>(scripts);
+    }
+
+    public void start(){
+        getScripts().forEach(Script::start);
+    }
+    public void update(float delta_time){
+        getScripts().forEach(script -> {
+            script.update(delta_time);
+        });
+    }
+
+    public void revokeRenderer(){
+        this.renderer = null;
     }
 }

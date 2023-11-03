@@ -1,9 +1,9 @@
 package org.JEX.Core.GameObjects.Scripting;
 
 public class LambdaScript extends Script {
-    private LambdaScriptI script;
+    private ILambdaScript script;
 
-    public LambdaScript(LambdaScriptI script){
+    public LambdaScript(ILambdaScript script){
         this.script = script;
     }
 

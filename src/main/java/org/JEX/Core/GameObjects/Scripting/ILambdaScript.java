@@ -1,6 +1,6 @@
 package org.JEX.Core.GameObjects.Scripting;
 
-public interface LambdaScriptI {
+public interface ILambdaScript {
 
     default void update(float delta_time){}
 
