@@ -1,7 +1,7 @@
 package org.JEX.Rendering.RenderPipelines;
 
 import org.JEX.Core.Configs.LevelConfig;
-import org.JEX.Core.Levels.LevelIterator;
+import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Rendering.Renderers.Renderer;
 
 /**
@@ -11,5 +11,5 @@ import org.JEX.Rendering.Renderers.Renderer;
 public interface RenderPipeline {
     void preFrameInit();
 
-    void render(LevelIterator<Renderer> renderers, LevelConfig config);
+    void render(JEXIterator<Renderer> renderers, LevelConfig config);
 }

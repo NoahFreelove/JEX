@@ -21,6 +21,7 @@ public class JEXConfig {
     //region Logging
     private boolean enable_logs = true;
     private boolean log_errors = true;
+    private boolean log_warnings = true;
     private boolean log_debug = true;
     //endregion
 
@@ -157,6 +158,9 @@ public class JEXConfig {
 
     public boolean log_debug() {
         return log_debug;
+    }
+    public boolean log_warnings(){
+        return log_warnings;
     }
 
     public Class<? extends GLFWWindow> window_class() {

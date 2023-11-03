@@ -18,4 +18,8 @@ public final class LevelConfig {
         this.type = type;
         return this;
     }
+
+    public String getName(){
+        return name;
+    }
 }

@@ -56,11 +56,8 @@ public class JEX {
      * Starts JEX and creates a window using the given config.
      * @param config The config to use for the engine.
      */
-    public static JEX startEngine(JEXConfig config){
-        if(engine_created){
-            return null;
-        }
-        else if (engine_instance != null){
+    public static JEX startEngine(JEXConfig config, boolean verify){
+        if (engine_instance != null){
             engine_instance.setConfig(config);
             return engine_instance;
         }
@@ -75,6 +72,9 @@ public class JEX {
             if(engine_instance.window == null || result != WindowCreationResult.GOOD){
                 engine_created = false;
                 engine_instance = null;
+                if(verify){
+                    System.exit(1);
+                }
                 return;
             }
 
@@ -269,10 +269,12 @@ public class JEX {
         function_pipeline.endFrame();
     }
 
-    public void setActive_level(Level active_level) {
-        this.function_pipeline.on_level_unload(this.active_level);
+    public void changeLevel(Level active_level) {
+        if(function_pipeline != null)
+            this.function_pipeline.on_level_unload(this.active_level);
         this.active_level = active_level;
-        this.function_pipeline.on_level_load(active_level);
+        if(function_pipeline != null)
+            this.function_pipeline.on_level_load(active_level);
         new_level = true;
     }
 }

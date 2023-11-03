@@ -17,6 +17,13 @@ public class Log {
         System.err.println();
     }
 
+    public static void warn(String warning){
+        if(active_config().log_warnings() && active_config().enable_logs())
+            return;
+
+        System.out.println("WARN: " + warning);
+    }
+
     public static void print(String message){
         if(active_config().enable_logs())
             System.out.println(message);

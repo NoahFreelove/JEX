@@ -2,6 +2,7 @@ package org.JEX.Core.Levels;
 
 import org.JEX.Core.Configs.LevelConfig;
 import org.JEX.Core.GameObjects.GameObject;
+import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Rendering.Renderers.Renderer;
 
 import java.util.ArrayList;
@@ -19,8 +20,8 @@ public abstract class Level {
         this.config = config;
     }
 
-    public abstract LevelIterator<GameObject> getGameObjects();
-    public abstract LevelIterator<Renderer> getLevelRenderables();
+    public abstract JEXIterator<GameObject> getGameObjects();
+    public abstract JEXIterator<Renderer> getLevelRenderables();
 
     public abstract void add(GameObject object);
     public abstract void remove(GameObject object);
@@ -36,4 +37,5 @@ public abstract class Level {
 
     public abstract void loadLevel(HashMap<String, HashMap<String,String>>[] objects);
     public abstract HashMap<String, HashMap<String,String>>[] saveLevel();
+    public abstract void getGameObject(SearchQuery query);
 }
