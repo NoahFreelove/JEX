@@ -1,17 +1,13 @@
 package org.JEX.Rendering.Shaders;
 
-import org.JEX.Logs.Exceptions.JEXception;
-import org.JEX.Logs.Log;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.util.shaderc.Shaderc;
-import org.lwjgl.vulkan.VK;
 import org.lwjgl.vulkan.VkShaderModuleCreateInfo;
 
 import java.nio.ByteBuffer;
 import java.nio.LongBuffer;
 
-import static org.lwjgl.system.MemoryUtil.*;
-import static org.lwjgl.vulkan.VK10.*;
+import static org.lwjgl.system.MemoryUtil.memAllocLong;
+import static org.lwjgl.system.MemoryUtil.memFree;
 
 public non-sealed class SPIRVShader extends ShaderBase {
 
@@ -31,30 +27,21 @@ public non-sealed class SPIRVShader extends ShaderBase {
 
     @Override
     void compile() {
+        //TODO: Implement SPIRV shader compilation
         ByteBuffer buff = shaderc_compile();
 
         VkShaderModuleCreateInfo moduleCreateInfo = VkShaderModuleCreateInfo.calloc()
                 .sType$Default()
                 .pCode(buff);
         LongBuffer pShaderModule = memAllocLong(1);
-        int err = vkCreateShaderModule(device, moduleCreateInfo, null, pShaderModule);
+        //nt err = vkCreateShaderModule(device, moduleCreateInfo, null, pShaderModule);
 
         memFree(pShaderModule);
-        if (err != VK_SUCCESS) {
+        /*if (err != VK_SUCCESS) {
             Log.error(new JEXception("Failed to compile vulkan shader"));
         }
         else{
             shaderModule = pShaderModule.get(0);
-        }
-    }
-
-    @Override
-    protected void destroy() {
-
-    }
-
-    @Override
-    public void enableShader() {
-
+        }*/
     }
 }

@@ -1,21 +1,26 @@
 package org.JEX.Rendering.Shaders;
 
+import org.JEX.Core.Annotations.EngineThread;
 import org.JEX.Core.IO.BufferedFile;
 import org.JEX.Core.IO.Filepath;
+import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Logs.Exceptions.IOExceptions.DataNotYetLoadedException;
 import org.JEX.Logs.Exceptions.IOExceptions.ResourceDoesntExistException;
 import org.JEX.Logs.Log;
-import org.lwjgl.util.shaderc.Shaderc;
+import org.JEX.Rendering.Shaders.Uniforms.EmptyUniform;
+import org.JEX.Rendering.Shaders.Uniforms.ShaderUniform;
 
-public abstract sealed class ShaderBase permits GLSLShader,SPIRVShader {
+import java.util.ArrayList;
+
+public abstract sealed class ShaderBase permits GLShader,SPIRVShader {
     protected String shaderSourceString;
     protected final ShaderType type;
-    protected boolean isValid = false;
 
     public ShaderBase(ShaderType type){
         this.type = type;
     }
 
+    @EngineThread
     abstract void compile();
 
     public void loadSourceFromFile(Filepath file){
@@ -36,7 +41,6 @@ public abstract sealed class ShaderBase permits GLSLShader,SPIRVShader {
         return type;
     }
 
-    protected abstract void destroy();
 
-    public abstract void enableShader();
+
 }

@@ -4,9 +4,9 @@ import org.JEX.Logs.Log;
 
 public class KeyboardHandler {
 
-    private static boolean[] keys = new boolean[257];
-    private static boolean[] disabled_keys = new boolean[257];
-    private static boolean[] sticky_keys = new boolean[257];
+    private static boolean[] keys = new boolean[1024];
+    private static boolean[] disabled_keys = new boolean[1024];
+    private static boolean[] sticky_keys = new boolean[1024];
     private static boolean input_enabled = true;
 
     public static void onKeyPress(int key){

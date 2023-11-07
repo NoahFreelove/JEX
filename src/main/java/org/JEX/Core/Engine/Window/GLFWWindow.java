@@ -11,6 +11,7 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
+import static org.lwjgl.opengl.GL11.*;
 
 public class GLFWWindow {
     protected long handle = -1L;
@@ -20,7 +21,7 @@ public class GLFWWindow {
     private long window_monitor = 0L;
     private long window_share = 0L;
     private long update_millis = 1000L / 60L; // 60 FPS
-    private long delta_millis = 0L;
+    private long delta_nanos = 0L;
     private float delta = 0.0f;
     public GLFWWindow(){}
 
@@ -135,35 +136,55 @@ public class GLFWWindow {
 
     @EngineThread
     public void windowLoop(JEX engine) {
+        glClearColor(0,0,0,1);
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glDisable(GL_DEPTH_TEST);
+        glEnable(GL_COLOR_MATERIAL);
+
         long curr_millis = 0;
         while (!glfwWindowShouldClose(handle)){
-            long frameStart = System.currentTimeMillis();
+            long frameStart = System.nanoTime();
 
+
+            /*try (MemoryStack stack = stackPush()) {
+                IntBuffer width  = stack.mallocInt(1);
+                IntBuffer height = stack.mallocInt(1);
+
+                glfwGetWindowSize(getHandle(), width, height);
+                glViewport(0, 0, width.get(0), height.get(0));
+                glClearColor(0,0,0,1);
+            }*/
             boolean isRenderUpdate = false;
 
-
-            curr_millis += delta_millis;
+            curr_millis += delta_nanos;
             if(curr_millis >= update_millis){
                 curr_millis = 0;
                 isRenderUpdate = true;
             }
+            if(isRenderUpdate)
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             engine.game_update(delta, isRenderUpdate);
 
-            glfwSwapBuffers(handle);
+            if(isRenderUpdate)
+            {
+                glfwSwapBuffers(handle);
+            }
+
             engine.window_update();
 
 
-            long frameEnd = System.currentTimeMillis();
-            delta_millis = (frameEnd - frameStart);
-            delta = (float) delta_millis / 1000.0f;
+            long frameEnd = System.nanoTime();
+            delta_nanos = (frameEnd - frameStart);
+            delta = (float) delta_nanos / 1000000000.0f;
             engine.endFrame();
             glfwPollEvents();
         }
     }
 
-    public long getDelta_Millis() {
-        return delta_millis;
+    public long getDeltaNanos() {
+        return delta_nanos;
     }
 
     public float getDeltaTime() {

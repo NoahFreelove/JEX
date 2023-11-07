@@ -36,4 +36,13 @@ public class JEXIterator<T> {
             iterable.run(t);
         }
     }
+
+    public void forEachI(JEXIterableI<T> iterable){
+        for (int i = 0; i < arr.length; i++) {
+            if(arr[i] == null)
+                continue;
+            iterable.run(arr[i], i);
+        }
+    }
+
 }

@@ -4,6 +4,9 @@ import org.JEX.Core.Configs.LevelConfig;
 import org.JEX.Core.Engine.Window.GraphicsAPI;
 import org.JEX.Core.GameObjects.GameObject;
 import org.JEX.Rendering.Shaders.ShaderBase;
+import org.JEX.Rendering.VertexUtil.VertexObject;
+
+import static org.JEX.Logs.Log.print;
 
 public abstract class Renderer {
     private final GraphicsAPI api;
@@ -11,11 +14,6 @@ public abstract class Renderer {
 
     protected LevelConfig currentLevelConfig;
     protected RenderConfig renderConfig;
-
-    protected ShaderBase vertexShader;
-    protected ShaderBase fragmentShader;
-    protected ShaderBase geometryShader;
-    protected ShaderBase computerShader;
 
     public Renderer(GraphicsAPI api){
         this.api = api;

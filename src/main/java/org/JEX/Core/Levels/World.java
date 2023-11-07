@@ -7,6 +7,7 @@ import org.JEX.Logs.Exceptions.ArgumentExceptions.NullArgumentException;
 import org.JEX.Logs.Log;
 import org.JEX.Rendering.Renderers.Renderer;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -40,6 +41,18 @@ public class World extends Level{
         gameObjects.add(object);
 
         gameObjects_arr = gameObjects.toArray(new GameObject[0]);
+        if(object.hasRenderer()){
+            addRenderable(object.getRenderer());
+        }
+    }
+
+    public void addRenderable(Renderer renderer){
+        if(!renderable.contains(renderer))
+            renderable.add(renderer);
+        renderable_arr = renderable.toArray(new Renderer[0]);
+    }
+    public void removeRenderable(Renderer renderer){
+        renderable.remove(renderer);
     }
 
     @Override

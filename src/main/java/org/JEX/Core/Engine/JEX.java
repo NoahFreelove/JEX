@@ -248,14 +248,15 @@ public class JEX {
     // Runs the active render pipeline
     @EngineThread
     public void triggerRenderPipeline(){
-        if(render_pipeline == null || active_level == null)
-            return;
 
         if(tmp_render_pipeline != null)
         {
             render_pipeline = tmp_render_pipeline;
             tmp_render_pipeline = null;
         }
+
+        if(render_pipeline == null || active_level == null)
+            return;
 
         render_pipeline.preFrameInit();
         render_pipeline.render(active_level.getLevelRenderables(), active_level.getConfig());

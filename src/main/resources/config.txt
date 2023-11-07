@@ -1,6 +1,6 @@
 log_debug:true:bool
 window_title:JEX:string
-window_width:1920:int
-window_height:1080:int
+window_width:1000:int
+window_height:1000:int
 resizable:false:bool
 graphics_api:opengl:enum

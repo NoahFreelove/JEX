@@ -143,4 +143,12 @@ public class GameObject {
     public void revokeRenderer(){
         this.renderer = null;
     }
+
+    public void setRenderer(Renderer r){
+        if(r == null)
+            return;
+        has_renderer = true;
+        r.setAttachedGameObject(this);
+        renderer = r;
+    }
 }
