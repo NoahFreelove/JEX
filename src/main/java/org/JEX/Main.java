@@ -58,25 +58,9 @@ public class Main {
         VertexObjectGLWrapper wrapper = new VertexObjectGLWrapper(m);
         wrapper.queueBuffer();
 
-        GLShader vertexShader = new GLShader(ShaderType.Vertex, """
-                #version 330 core
-                layout(location = 0) in vec3 vertexPos;
-                layout(location = 1) in vec3 normal;
-                layout(location = 2) in vec2 uv;
-                                
-                void main() {
-                    gl_Position.xyz = vertexPos;
-                    gl_Position.w = 1.0;
-                }
-                """);
+        GLShader vertexShader = new GLShader(ShaderType.Vertex, new Filepath("vertex.glsl", FilepathType.ClassLoader));
 
-        GLShader fragmentShader = new GLShader(ShaderType.Fragment, """
-                #version 330 core
-                out vec4 FragColor;
-                void main(){
-                  FragColor = vec4(0.5, 1, 0, 0);
-                }
-                """);
+        GLShader fragmentShader = new GLShader(ShaderType.Fragment, new Filepath("fragment.glsl", FilepathType.ClassLoader));
 
 
         GLRenderer renderer = new GLRenderer(vertexShader, fragmentShader);

@@ -22,6 +22,7 @@ public class BufferedFile {
             return;
         }
         this.filepath = filepath;
+        readDataFromFile();
     }
 
     public BufferedFile(Filepath filepath, boolean autoload) {
@@ -37,13 +38,13 @@ public class BufferedFile {
             readDataFromFile();
     }
 
-    public void readDataFromFile() {
+    public boolean readDataFromFile() {
         File file = filepath.getFile();
         if(file == null)
         {
             Log.error(new FileReadException("Could not read file: File is null.",
                     "Aborted File Read Attempt."));
-            return;
+            return false;
         }
         // Load file into byte array
         try (FileInputStream fis = new FileInputStream(file)) {
@@ -52,10 +53,17 @@ public class BufferedFile {
                 loaded = true;
             }
         } catch (IOException e) {
-            Log.error(new FileReadException("Could not read file: \"" + filepath.getPath() + "\"" + e.getMessage()));
-            bufferedData = new byte[0];
-            loaded = false;
+            if(!loaded){
+                bufferedData = new byte[0];
+                Log.error(new FileReadException("Could not read file: \"" + filepath.getPath() + "\"" + e.getMessage()));
+            }
+            else{
+                Log.error(new FileReadException("Could not reload file: \"" + filepath.getPath() + "\"" + e.getMessage(),
+                        "Because the file was previously loaded the old data has been kept."));
+            }
+            return false;
         }
+        return true;
     }
 
     public byte[] getData() {
