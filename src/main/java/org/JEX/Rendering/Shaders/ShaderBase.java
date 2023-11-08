@@ -3,16 +3,12 @@ package org.JEX.Rendering.Shaders;
 import org.JEX.Core.Annotations.EngineThread;
 import org.JEX.Core.IO.BufferedFile;
 import org.JEX.Core.IO.Filepath;
-import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Logs.Exceptions.IOExceptions.DataNotYetLoadedException;
 import org.JEX.Logs.Exceptions.IOExceptions.ResourceDoesntExistException;
 import org.JEX.Logs.Log;
-import org.JEX.Rendering.Shaders.Uniforms.EmptyUniform;
-import org.JEX.Rendering.Shaders.Uniforms.ShaderUniform;
+import org.JEX.Rendering.Shaders.OpenGL.GLShader;
 
-import java.util.ArrayList;
-
-public abstract sealed class ShaderBase permits GLShader,SPIRVShader {
+public abstract class ShaderBase {
     protected String shaderSourceString;
     protected final ShaderType type;
 
@@ -21,7 +17,7 @@ public abstract sealed class ShaderBase permits GLShader,SPIRVShader {
     }
 
     @EngineThread
-    abstract void compile();
+    protected abstract void compile();
 
     public void loadSourceFromFile(Filepath file){
         if(!file.checkExistence())

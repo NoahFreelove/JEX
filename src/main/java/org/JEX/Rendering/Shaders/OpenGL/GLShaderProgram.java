@@ -1,9 +1,9 @@
-package org.JEX.Rendering.Shaders;
+package org.JEX.Rendering.Shaders.OpenGL;
 
 import org.JEX.Core.Annotations.EngineThread;
-import org.JEX.Core.Engine.Window.GraphicsAPI;
 import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Logs.Log;
+import org.JEX.Rendering.Shaders.ShaderType;
 import org.JEX.Rendering.Shaders.Uniforms.EmptyUniform;
 import org.JEX.Rendering.Shaders.Uniforms.ShaderUniform;
 import org.lwjgl.opengl.GL46;

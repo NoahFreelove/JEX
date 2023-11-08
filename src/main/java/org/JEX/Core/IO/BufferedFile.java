@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class BufferedFile {
     protected final Filepath filepath;
@@ -79,7 +80,7 @@ public class BufferedFile {
         return new String(getData());
     }
     public String[] getDataAsLines(){
-        return getDataAsString().split("\n");
+        return getDataAsString().split("[\\r\\n]+");
     }
 
     public boolean hasLoaded(){

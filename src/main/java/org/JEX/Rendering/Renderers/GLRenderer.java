@@ -2,8 +2,8 @@ package org.JEX.Rendering.Renderers;
 
 import org.JEX.Core.Engine.JEX;
 import org.JEX.Core.Engine.Window.GraphicsAPI;
-import org.JEX.Rendering.Shaders.GLShader;
-import org.JEX.Rendering.Shaders.GLShaderProgram;
+import org.JEX.Rendering.Shaders.OpenGL.GLShader;
+import org.JEX.Rendering.Shaders.OpenGL.GLShaderProgram;
 import org.JEX.Rendering.VertexUtil.VertexObjectGLWrapper;
 import org.lwjgl.opengl.GL46;
 

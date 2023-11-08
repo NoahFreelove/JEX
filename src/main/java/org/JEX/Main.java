@@ -8,10 +8,12 @@ import org.JEX.Core.GameObjects.Scripting.ILambdaScript;
 import org.JEX.Core.IO.Filepath;
 import org.JEX.Core.IO.FilepathType;
 import org.JEX.Core.IO.Resources.Model;
+import org.JEX.Core.IO.Resources.ModelLoader;
 import org.JEX.Core.Levels.World;
 import org.JEX.Core.Levels.LevelType;
+import org.JEX.Logs.Log;
 import org.JEX.Rendering.Renderers.GLRenderer;
-import org.JEX.Rendering.Shaders.GLShader;
+import org.JEX.Rendering.Shaders.OpenGL.GLShader;
 import org.JEX.Rendering.Shaders.ShaderType;
 import org.JEX.Rendering.VertexUtil.VertexObjectGLWrapper;
 import org.joml.Vector2f;
@@ -31,27 +33,18 @@ public class Main {
         object.addScript(new ILambdaScript() {
             @Override
             public void update(float delta_time) {
-                //Log.debug("HI!!!: " + delta_time);
+                Log.debug("HI!!!: " + delta_time);
             }
         });
 
-        Model m = Model.create2DModel(new Vector2f[]{
-                // Create square
-                new Vector2f(-0.5f,-0.5f),
-                new Vector2f(0.5f,-0.5f),
-                new Vector2f(0.5f,0.5f),
-                new Vector2f(-0.5f,0.5f),
-        },new Vector2f[]{
-                new Vector2f(0,0),
-                new Vector2f(1,0),
-                new Vector2f(1,1),
-                new Vector2f(0,1),
-        });
+        Model m = ModelLoader.loadModel(new Filepath("triangle.model", FilepathType.ClassLoader));
         GLRenderer renderer = getGlRenderer(m);
 
         object.setRenderer(renderer);
 
         world.add(object);
+
+
     }
 
     private static GLRenderer getGlRenderer(Model m) {

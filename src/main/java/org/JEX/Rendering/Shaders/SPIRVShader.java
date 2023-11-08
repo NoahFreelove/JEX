@@ -9,7 +9,7 @@ import java.nio.LongBuffer;
 import static org.lwjgl.system.MemoryUtil.memAllocLong;
 import static org.lwjgl.system.MemoryUtil.memFree;
 
-public non-sealed class SPIRVShader extends ShaderBase {
+public class SPIRVShader extends ShaderBase {
 
     long shaderModule = -1L;
 
@@ -26,7 +26,7 @@ public non-sealed class SPIRVShader extends ShaderBase {
     }
 
     @Override
-    void compile() {
+    protected void compile() {
         //TODO: Implement SPIRV shader compilation
         ByteBuffer buff = shaderc_compile();
 

@@ -1,17 +1,19 @@
-package org.JEX.Rendering.Shaders;
+package org.JEX.Rendering.Shaders.OpenGL;
 
 import org.JEX.Core.Annotations.EngineThread;
 import org.JEX.Core.Engine.JEX;
 import org.JEX.Core.IO.BufferedFile;
 import org.JEX.Core.IO.Filepath;
 import org.JEX.Logs.Log;
+import org.JEX.Rendering.Shaders.ShaderBase;
+import org.JEX.Rendering.Shaders.ShaderType;
 import org.JEX.Rendering.Shaders.Uniforms.ShaderUniform;
 import org.lwjgl.opengl.*;
 
 /**
  * Not called GLSL Shader because its specific to OpenGL. Vulkan can use compiled GLSL shaders.
  */
-public non-sealed class GLShader extends ShaderBase{
+public class GLShader extends ShaderBase {
     private final int shaderTypeInt;
     private int compileID = -1;
 
@@ -51,7 +53,7 @@ public non-sealed class GLShader extends ShaderBase{
 
     @Override
     @EngineThread
-    void compile() {
+    protected void compile() {
         // Compile OpenGL shader with source
         int compiled = GL46.glCreateShader(shaderTypeInt);
         GL46.glShaderSource(compiled, shaderSourceString);

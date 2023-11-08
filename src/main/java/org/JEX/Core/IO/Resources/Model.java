@@ -1,5 +1,7 @@
 package org.JEX.Core.IO.Resources;
 
+import org.JEX.Core.IO.BufferedFile;
+import org.JEX.Core.IO.Filepath;
 import org.JEX.Logs.Log;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -10,6 +12,12 @@ public class Model {
     private Vector3f[] verts;
     private Vector3f[] normals;
     private Vector2f[] uvs;
+
+    public Model(){
+        verts = new Vector3f[0];
+        normals = new Vector3f[0];
+        uvs = new Vector2f[0];
+    }
 
     public Model(Vector3f[] verts, Vector3f[] normals, Vector2f[] uvs) {
         this.verts = verts;
