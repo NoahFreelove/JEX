@@ -91,6 +91,10 @@ public class JEX {
         return engine_instance;
     }
 
+    public static Level getLevel() {
+        return engine_instance.active_level;
+    }
+
     private WindowCreationResult create_engine_window(JEXConfig config) {
         try {
             GLFWWindow window = config.window_class().getConstructor().newInstance();
@@ -149,7 +153,7 @@ public class JEX {
                 KeyboardHandler.onKeyRelease(key);
             }
             else if(action == GLFW_REPEAT){
-                KeyboardHandler.onKeyPress(key);
+                KeyboardHandler.keyRepeat(key);
             }
         });
 

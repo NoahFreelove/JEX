@@ -1,13 +1,14 @@
 package org.JEX.Rendering.Shaders.Uniforms;
 
-public class EmptyUniform extends ShaderUniform<Object>{
+import org.JEX.Core.Engine.Window.GraphicsAPI;
 
-    public EmptyUniform(){
-        super("EmptyUniform");
+public class EmptyUniform extends ShaderUniform<Object>{
+    public EmptyUniform() {
+        super("Empty Uniform", new Object(), GraphicsAPI.Unknown);
     }
 
     @Override
-    public void setUniform() {
+    public void setUniform(int program) {
 
     }
 }

@@ -96,7 +96,6 @@ public class ITC {
         keyCodes.put("F10",299);
         keyCodes.put("F11",300);
         keyCodes.put("F12",301);
-        // Skip to 340
         keyCodes.put("LEFT_SHIFT",340);
         keyCodes.put("LEFT_CONTROL",341);
         keyCodes.put("LEFT_ALT",342);

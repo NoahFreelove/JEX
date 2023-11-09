@@ -11,12 +11,12 @@ import org.JEX.Core.IO.Resources.Model;
 import org.JEX.Core.IO.Resources.ModelLoader;
 import org.JEX.Core.Levels.World;
 import org.JEX.Core.Levels.LevelType;
-import org.JEX.Logs.Log;
 import org.JEX.Rendering.Renderers.GLRenderer;
 import org.JEX.Rendering.Shaders.OpenGL.GLShader;
 import org.JEX.Rendering.Shaders.ShaderType;
+import org.JEX.Rendering.Shaders.Uniforms.Vector4fUniform;
 import org.JEX.Rendering.VertexUtil.VertexObjectGLWrapper;
-import org.joml.Vector2f;
+import org.joml.Vector4f;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,22 +29,20 @@ public class Main {
         World world = new World(new LevelConfig("World1", LevelType.THIRD_DIMENSIONAL));
         instance.changeLevel(world);
 
-        GameObject object = new GameObject();
-        object.addScript(new ILambdaScript() {
-            @Override
-            public void update(float delta_time) {
-                Log.debug("HI!!!: " + delta_time);
-            }
-        });
+        GameObject triangle_object = new GameObject();
+        Model triangle = ModelLoader.loadModel(new Filepath("triangle.model", FilepathType.ClassLoader));
+        GLRenderer renderer = getGlRenderer(triangle);
+        triangle_object.setRenderer(renderer);
+        world.add(triangle_object);
 
-        Model m = ModelLoader.loadModel(new Filepath("triangle.model", FilepathType.ClassLoader));
-        GLRenderer renderer = getGlRenderer(m);
+        GameObject square_object = new GameObject();
+        Model square = ModelLoader.loadModel(new Filepath("square.model", FilepathType.ClassLoader));
+        GLRenderer renderer_square = getGlRenderer(square);
+        square_object.setRenderer(renderer_square);
+        world.add(square_object);
 
-        object.setRenderer(renderer);
-
-        world.add(object);
-
-
+        renderer.getGLShaderProgram().addUniform(new Vector4fUniform("color", new Vector4f(1, 0, 0, 1)));
+        renderer_square.getGLShaderProgram().addUniform(new Vector4fUniform("color", new Vector4f(0, 0.5f, 0.5f, 1)));
     }
 
     private static GLRenderer getGlRenderer(Model m) {

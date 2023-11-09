@@ -1,20 +1,12 @@
 package org.JEX.Rendering.Shaders.OpenGL;
 
 import org.JEX.Core.Annotations.EngineThread;
-import org.JEX.Core.Util.JEXIterator;
-import org.JEX.Logs.Log;
+import org.JEX.Rendering.Shaders.ShaderProgramIdentification;
+import org.JEX.Rendering.Shaders.ShaderProgram;
 import org.JEX.Rendering.Shaders.ShaderType;
-import org.JEX.Rendering.Shaders.Uniforms.EmptyUniform;
-import org.JEX.Rendering.Shaders.Uniforms.ShaderUniform;
 import org.lwjgl.opengl.GL46;
 
-import java.util.ArrayList;
-
-public class GLShaderProgram {
-    private int programID = -1;
-    private ArrayList<ShaderUniform<?>> uniforms = new ArrayList<>();
-    protected JEXIterator<ShaderUniform<?>> uniformIterator = new JEXIterator<ShaderUniform<?>>(new ShaderUniform[0]);
-    protected boolean isValid = false;
+public class GLShaderProgram extends ShaderProgram {
 
     protected GLShader vertexShader;
     protected GLShader fragmentShader;
@@ -51,86 +43,51 @@ public class GLShaderProgram {
         }
     }
 
+    @Override
     public boolean isValid(){
-        return programID >= 0 && isValid;
+        return programID() >= 0 && isValid;
     }
 
     public void enableShader(){
         if(isValid()){
-            GL46.glUseProgram(programID);
+            GL46.glUseProgram(programID());
             setUniforms();
         }
     }
 
-    @EngineThread
-    protected void setUniforms(){
-        uniformIterator.reset();
-        uniformIterator.forEach(ShaderUniform::setUniform);
-    }
-
-    public void addUniform(ShaderUniform<?> uni){
-        if(uniforms == null || uniforms.contains(uni))
-            return;
-        this.uniforms.add(uni);
-        uniformIterator = new JEXIterator<ShaderUniform<?>>(uniforms.toArray(new ShaderUniform[0]));
-    }
-
-    public void removeUniform(ShaderUniform<?> uni){
-        if(uniforms == null || !uniforms.contains(uni))
-            return;
-        this.uniforms.remove(uni);
-        uniformIterator = new JEXIterator<ShaderUniform<?>>(uniforms.toArray(new ShaderUniform[0]));
-    }
-
-    public ShaderUniform<?> getUniform(String name){
-        for (ShaderUniform<?> uniform :
-                uniforms) {
-            if (uniform.getName().equals(name)) {
-                return uniform;
-            }
-        }
-        Log.warn("Returned Empty Uniform from getUniform(" + name + ") because no uniform with that name was found.");
-        return new EmptyUniform();
-    }
-
-    public ShaderUniform<?> getUniform(int index){
-        if(index>=0 && index < uniforms.size()){
-            return uniforms.get(index);
-        }
-        Log.warn("Returned Empty Uniform from getUniform(" + index + ") because that index is out of range.");
-        return new EmptyUniform();
-    }
     protected void destroy() {
-        GL46.glDeleteProgram(programID);
+        GL46.glDeleteProgram(programID());
     }
 
     @EngineThread
+    @Override
     public void compile(){
-        programID = GL46.glCreateProgram();
+        identificationModule = new ShaderProgramIdentification(GL46.glCreateProgram());
+
 
         if(vertexShader != null){
             vertexShader.compile();
-            GL46.glAttachShader(programID, vertexShader.getCompileID());
+            GL46.glAttachShader(programID(), vertexShader.getCompileID());
         }
         if(fragmentShader != null){
             fragmentShader.compile();
-            GL46.glAttachShader(programID, fragmentShader.getCompileID());
+            GL46.glAttachShader(programID(), fragmentShader.getCompileID());
         }
         if(geometryShader != null){
             geometryShader.compile();
-            GL46.glAttachShader(programID, geometryShader.getCompileID());
+            GL46.glAttachShader(programID(), geometryShader.getCompileID());
         }
         if(computerShader != null){
             computerShader.compile();
-            GL46.glAttachShader(programID, computerShader.getCompileID());
+            GL46.glAttachShader(programID(), computerShader.getCompileID());
         }
 
-        GL46.glLinkProgram(programID);
-        GL46.glValidateProgram(programID);
+        GL46.glLinkProgram(programID());
+        GL46.glValidateProgram(programID());
 
-        if(GL46.glGetProgrami(programID, GL46.GL_LINK_STATUS) == GL46.GL_FALSE){
+        if(GL46.glGetProgrami(programID(), GL46.GL_LINK_STATUS) == GL46.GL_FALSE){
             System.err.println("Failed to link shader program!");
-            System.err.println(GL46.glGetProgramInfoLog(programID));
+            System.err.println(GL46.glGetProgramInfoLog(programID()));
             return;
         }
         isValid = true;
@@ -162,4 +119,13 @@ public class GLShaderProgram {
         this.uvLocation = uvLocation;
     }
 
+    @Override
+    protected void setUniforms() {
+        uniformIterator.reset();
+        uniformIterator.forEach((uni) -> uni.setUniform(programID()));
+    }
+
+    private int programID(){
+        return identificationModule.getGL_PROGRAM();
+    }
 }

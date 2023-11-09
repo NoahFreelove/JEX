@@ -8,6 +8,7 @@ import org.JEX.Logs.Log;
 import java.util.Arrays;
 
 public abstract class ModelLoader {
+
     private static boolean loaded = false;
 
     private static ModelLoader10 loader10;

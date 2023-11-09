@@ -3,7 +3,7 @@ package org.JEX.Core.Input;
 import org.JEX.Core.Annotations.New;
 import org.joml.Vector2f;
 
-public class MouseHandler {
+public class MouseHandler extends InputHandler {
     private static boolean[] mouse_buttons = new boolean[8];
     private static boolean[] disabled_mouse_buttons = new boolean[8];
     private static boolean input_enabled = true;
@@ -15,6 +15,7 @@ public class MouseHandler {
             return;
         }
         mouse_buttons[button] = true;
+        anyKeyEvent();
     }
 
     public static void onMouseRelease(int button){
@@ -22,6 +23,7 @@ public class MouseHandler {
             return;
         }
         mouse_buttons[button] = false;
+        anyKeyEvent();
     }
 
     public static boolean isMouseDown(int button){

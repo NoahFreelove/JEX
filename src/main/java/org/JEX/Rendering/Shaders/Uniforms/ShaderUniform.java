@@ -1,18 +1,18 @@
 package org.JEX.Rendering.Shaders.Uniforms;
 
-import org.lwjgl.opengl.GL46;
+import org.JEX.Core.Annotations.EngineThread;
+import org.JEX.Core.Engine.Window.GraphicsAPI;
+import org.lwjgl.system.APIUtil;
 
 public abstract class ShaderUniform<T> {
     protected T value;
     protected String name;
+    protected final GraphicsAPI api;
 
-    public ShaderUniform(String name){
-        this.name = name;
-    }
-
-    public ShaderUniform(String name, T value){
+    public ShaderUniform(String name, T value, GraphicsAPI api){
         this.name = name;
         this.value = value;
+        this.api = api;
     }
 
     public void setName(String name){
@@ -30,7 +30,8 @@ public abstract class ShaderUniform<T> {
     public String getName(){
         return name;
     }
-
-    public abstract void setUniform();
-
+    @EngineThread
+    // Need to change this from int program to some object so it works for
+    // OpenGL and Vulkan
+    public abstract void setUniform(int program);
 }

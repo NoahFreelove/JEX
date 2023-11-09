@@ -12,17 +12,20 @@ import static org.JEX.Logs.Log.print;
 public class GLRenderer extends Renderer {
     protected VertexObjectGLWrapper vertexObject;
 
-    protected GLShaderProgram shaderProgram;
     protected int draw_mode = GL46.GL_TRIANGLE_FAN;
+
+    private GLShaderProgram castedShaderProgram;
 
     public GLRenderer() {
         super(GraphicsAPI.OpenGL);
         shaderProgram = new GLShaderProgram();
+        castedShaderProgram = (GLShaderProgram) shaderProgram;
     }
 
     public GLRenderer(GLShader... shaders) {
         super(GraphicsAPI.OpenGL);
         shaderProgram = new GLShaderProgram(shaders);
+        castedShaderProgram = (GLShaderProgram) shaderProgram;
         JEX.getInstance().queueEngineFunction(() -> shaderProgram.compile());
     }
 
@@ -37,7 +40,7 @@ public class GLRenderer extends Renderer {
         if(!vertexObject.ready() || !shaderProgram.isValid())
             return;
 
-        shaderProgram.enableShader();
+        castedShaderProgram.enableShader();
 
         vertexObject.bindBuffers();
 
@@ -55,5 +58,8 @@ public class GLRenderer extends Renderer {
 
     }
 
+    public GLShaderProgram getGLShaderProgram(){
+        return castedShaderProgram;
+    }
 
 }

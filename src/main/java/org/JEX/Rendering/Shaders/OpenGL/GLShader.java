@@ -1,13 +1,10 @@
 package org.JEX.Rendering.Shaders.OpenGL;
 
 import org.JEX.Core.Annotations.EngineThread;
-import org.JEX.Core.Engine.JEX;
 import org.JEX.Core.IO.BufferedFile;
 import org.JEX.Core.IO.Filepath;
-import org.JEX.Logs.Log;
 import org.JEX.Rendering.Shaders.ShaderBase;
 import org.JEX.Rendering.Shaders.ShaderType;
-import org.JEX.Rendering.Shaders.Uniforms.ShaderUniform;
 import org.lwjgl.opengl.*;
 
 /**
