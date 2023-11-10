@@ -9,8 +9,12 @@ import org.JEX.Core.IO.Filepath;
 import org.JEX.Core.IO.FilepathType;
 import org.JEX.Core.IO.Resources.Model;
 import org.JEX.Core.IO.Resources.ModelLoader;
+import org.JEX.Core.Input.ITC;
+import org.JEX.Core.Input.InputCombo;
+import org.JEX.Core.Input.InputHandler;
 import org.JEX.Core.Levels.World;
 import org.JEX.Core.Levels.LevelType;
+import org.JEX.Logs.Log;
 import org.JEX.Rendering.Renderers.GLRenderer;
 import org.JEX.Rendering.Shaders.OpenGL.GLShader;
 import org.JEX.Rendering.Shaders.ShaderType;
@@ -43,6 +47,21 @@ public class Main {
 
         renderer.getGLShaderProgram().addUniform(new Vector4fUniform("color", new Vector4f(1, 0, 0, 1)));
         renderer_square.getGLShaderProgram().addUniform(new Vector4fUniform("color", new Vector4f(0, 0.5f, 0.5f, 1)));
+
+        InputCombo horiz = new InputCombo(new int[]{ITC.keyCode("A"), ITC.keyCode("D")}, new float[]{-1,1});
+        InputCombo vert = new InputCombo(new int[]{ITC.keyCode("W"), ITC.keyCode("S")}, new float[]{1,-1});
+        InputHandler.addAction("Horizontal", horiz);
+        InputHandler.addAction("Vertical", vert);
+        
+        square_object.addScript(new ILambdaScript() {
+            @Override
+            public void update(float delta_time) {
+                if(horiz.isAnyPressed())
+                    Log.print(horiz.weight());
+                if(vert.isAnyPressed())
+                    Log.print(vert.weight());
+            }
+        });
     }
 
     private static GLRenderer getGlRenderer(Model m) {

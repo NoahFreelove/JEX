@@ -141,6 +141,7 @@ public class ITC {
         return keyNames.get(code);
     }
     public static int keyCode(String name){
+        name = name.toUpperCase();
         return keyCodes.get(name);
     }
 

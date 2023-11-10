@@ -39,6 +39,10 @@ public class KeyboardHandler extends InputHandler {
         return keys[key];
     }
 
+    public static boolean isKeyDown(String key){
+        return keys[ITC.keyCode(key)];
+    }
+
     public static void disableKey(int key){
         disabled_keys[key] = true;
     }

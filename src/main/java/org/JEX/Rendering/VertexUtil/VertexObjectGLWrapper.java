@@ -43,7 +43,7 @@ public class VertexObjectGLWrapper extends VertexObject{
     }
 
     public void queueBuffer(){
-        JEX.getInstance().queueEngineFunction(this::buffer);
+        JEX.queueEngineFunction(this::buffer);
     }
 
     protected int[] abstractBufferGeneration(float[] data, int dataSize){

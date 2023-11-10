@@ -32,7 +32,7 @@ public class JEX {
     private static volatile boolean running = false;
     private Thread engine_thread;
 
-    private CopyOnWriteArrayList<Runnable> engine_thread_runnables = new CopyOnWriteArrayList<>();
+    private static CopyOnWriteArrayList<Runnable> engine_thread_runnables = new CopyOnWriteArrayList<>();
 
     private GLFWWindow window;
 
@@ -266,7 +266,7 @@ public class JEX {
         render_pipeline.render(active_level.getLevelRenderables(), active_level.getConfig());
     }
 
-    public void queueEngineFunction(Runnable runnable){
+    public static void queueEngineFunction(Runnable runnable){
         engine_thread_runnables.add(runnable);
     }
 

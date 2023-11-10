@@ -15,6 +15,18 @@ public class InputHandler {
     }
 
     public static boolean isActionPressed(String name){
-        return inputEvents.get(name).isPressed();
+        return inputEvents.get(name).isAllPressed();
+    }
+    public static boolean isPartActionPressed(String name){
+        return inputEvents.get(name).isORPressed();
+    }
+    public static float getComboWeight(String name){return inputEvents.get(name).weight();}
+
+    public InputCombo getAction(String name){
+        return inputEvents.get(name);
+    }
+
+    public static void addAction(String name, InputCombo combo){
+        inputEvents.put(name, combo);
     }
 }
