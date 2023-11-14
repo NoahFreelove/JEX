@@ -37,3 +37,4 @@ build/
 ### Mac OS ###
 .DS_Store
 src/main/java/org/JEX/Rendering/RenderUtil/VKUtil.java
+out/artifacts/JEX_jar/JEX.jar
