@@ -24,4 +24,8 @@ public final class LambdaScript extends Script {
             return;
         script.update(delta_time);
     }
+
+    public void setLambdaScript(ILambdaScript newScript){
+        this.script = newScript;
+    }
 }
