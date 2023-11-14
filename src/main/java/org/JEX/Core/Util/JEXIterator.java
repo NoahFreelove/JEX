@@ -3,10 +3,12 @@ package org.JEX.Core.Util;
 public class JEXIterator<T> {
 
     private final T[] arr;
+    private final int size;
     private int index = 0;
 
     public JEXIterator(T[] arr){
         this.arr = arr;
+        this.size = arr.length;
     }
 
     public boolean hasNext(){
@@ -43,6 +45,10 @@ public class JEXIterator<T> {
                 continue;
             iterable.run(arr[i], i);
         }
+    }
+
+    public int getSize(){
+        return size;
     }
 
 }

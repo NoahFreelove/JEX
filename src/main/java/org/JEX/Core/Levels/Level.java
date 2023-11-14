@@ -1,5 +1,6 @@
 package org.JEX.Core.Levels;
 
+import org.JEX.Audio.AudioListener;
 import org.JEX.Core.Configs.LevelConfig;
 import org.JEX.Core.GameObjects.GameObject;
 import org.JEX.Core.Util.JEXIterator;
@@ -15,6 +16,8 @@ public abstract class Level {
     protected ArrayList<Renderer> renderable = new ArrayList<>();
     protected Renderer[] renderable_arr = new Renderer[0];
     protected final LevelConfig config;
+
+    protected AudioListener listener;
 
     protected Level(LevelConfig config){
         this.config = config;

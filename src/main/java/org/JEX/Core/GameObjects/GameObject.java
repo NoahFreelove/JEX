@@ -3,6 +3,7 @@ package org.JEX.Core.GameObjects;
 import org.JEX.Core.GameObjects.Scripting.ILambdaScript;
 import org.JEX.Core.GameObjects.Scripting.LambdaScript;
 import org.JEX.Core.GameObjects.Scripting.Script;
+import org.JEX.Core.Util.JEXIterable;
 import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Logs.Exceptions.ArgumentExceptions.JEXception_Argument;
 import org.JEX.Logs.Exceptions.NullException.NullReturnException;
@@ -27,6 +28,7 @@ public class GameObject {
         mem_ID = this.hashCode();
         tag = name_tag.hashCode();
         scripts = new Script[0];
+
     }
 
     public boolean hasRenderer() {
@@ -121,7 +123,9 @@ public class GameObject {
         for (int i = 0; i < scripts.length; i++) {
             if(script == scripts[i])
             {
-                return  removeScript(i);
+                boolean result = removeScript(i);
+                if(result)
+                    scripts[i].detach();
             }
         }
         return false;
@@ -132,11 +136,16 @@ public class GameObject {
     }
 
     public void start(){
-        getScripts().forEach(Script::start);
+        getScripts().forEach(obj -> {
+            if(obj.isValid()){
+                obj.start();
+            }
+        });
     }
     public void update(float delta_time){
         getScripts().forEach(script -> {
-            script.update(delta_time);
+            if(script.isValid())
+                script.update(delta_time);
         });
     }
 

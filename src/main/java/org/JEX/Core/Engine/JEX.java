@@ -5,18 +5,23 @@ import org.JEX.Core.Configs.JEXConfig;
 import org.JEX.Core.Engine.FunctionPipelines.FunctionPipeline;
 import org.JEX.Core.Engine.Window.GLFWWindow;
 import org.JEX.Core.Engine.Window.WindowCreationResult;
+import org.JEX.Core.GameObjects.GameObject;
+import org.JEX.Core.GameObjects.Scripting.Script;
 import org.JEX.Core.Input.KeyboardHandler;
 import org.JEX.Core.Input.MouseHandler;
 import org.JEX.Core.Levels.Level;
 import org.JEX.Logs.Exceptions.ArgumentExceptions.NullArgumentException;
 import org.JEX.Logs.Exceptions.EngineSpecificExceptions.EngineNotYetStartedException;
 import org.JEX.Logs.Exceptions.JEXception;
+import org.JEX.Logs.Exceptions.ScriptExceptions.InstanceCreationError;
+import org.JEX.Logs.Exceptions.ScriptExceptions.JEXception_Script;
 import org.JEX.Logs.Log;
 import org.JEX.Rendering.RenderPipelines.RenderPipeline;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
 
+import java.lang.reflect.Constructor;
 import java.nio.IntBuffer;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -281,6 +286,21 @@ public class JEX {
         if(function_pipeline != null)
             this.function_pipeline.on_level_load(active_level);
         new_level = true;
+    }
+
+    public static Script instanceScript(Class<? extends Script> clazz, GameObject target){
+        try {
+            Constructor<? extends Script> constructor = clazz.getDeclaredConstructor();
+            constructor.setAccessible(true); // Make the constructor accessible
+            Script newInstance = constructor.newInstance();
+            target.addScript(newInstance);
+            return newInstance;
+            // Use the instance as needed
+        } catch (Exception e) {
+            Log.error(new InstanceCreationError("Error when trying to create new instance.", clazz, "returned null script."));
+        }
+
+        return null;
     }
 
     public static boolean isRunning(){

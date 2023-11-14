@@ -5,6 +5,7 @@ import org.JEX.Core.Configs.LevelConfig;
 import org.JEX.Core.Engine.JEX;
 import org.JEX.Core.GameObjects.GameObject;
 import org.JEX.Core.GameObjects.Scripting.ILambdaScript;
+import org.JEX.Core.GameObjects.Scripting.LambdaScript;
 import org.JEX.Core.IO.Filepath;
 import org.JEX.Core.IO.FilepathType;
 import org.JEX.Core.IO.Resources.Model;
@@ -62,6 +63,12 @@ public class Main {
                     Log.print(vert.weight());
             }
         });
+
+        Log.debug(square_object.getScripts().getSize());
+
+        JEX.instanceScript(LambdaScript.class, square_object);
+        Log.debug(square_object.getScripts().getSize());
+
     }
 
     private static GLRenderer getGlRenderer(Model m) {
