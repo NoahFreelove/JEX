@@ -1,6 +1,6 @@
 package org.JEX.Core.GameObjects.Scripting;
 
-import org.JEX.Core.GameObjects.GameObject;
+import org.JEX.Core.Engine.GameObject;
 
 import java.util.HashMap;
 

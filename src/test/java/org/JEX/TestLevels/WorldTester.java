@@ -2,8 +2,8 @@ package org.JEX.TestLevels;
 
 import org.JEX.Core.Configs.JEXConfig;
 import org.JEX.Core.Configs.LevelConfig;
+import org.JEX.Core.Engine.GameObject;
 import org.JEX.Core.Engine.JEX;
-import org.JEX.Core.GameObjects.GameObject;
 import org.JEX.Core.GameObjects.Scripting.ILambdaScript;
 import org.JEX.Core.IO.Resources.Model;
 import org.JEX.Core.Input.ITC;
@@ -30,15 +30,15 @@ public class WorldTester {
 
     public static void TestWorld(World world, int escapeKey){
 
-        GameObject escapeObject = new GameObject();
+        GameObject escapeObject = JEX.createGameObject();
 
-        escapeObject.addScript(new ILambdaScript() {
+        JEX.addLambdaScript(new ILambdaScript() {
             @Override
             public void update(float delta_time) {
                 if(KeyboardHandler.isKeyDown(escapeKey))
                     stop[0] = true;
             }
-        });
+        }, escapeObject);
         world.add(escapeObject);
         JEX instance = JEX.startEngine(JEXConfig.createDefaultConfig(), true);
 
@@ -50,7 +50,7 @@ public class WorldTester {
     private static World createSampleWorld(){
         World world = new World(new LevelConfig("World1", LevelType.THIRD_DIMENSIONAL));
 
-        GameObject triangle_object = new GameObject();
+        GameObject triangle_object = JEX.createGameObject();
 
         Model triangle = Model.create2DModel(new Vector2f[]{
                 new Vector2f(-0.5f, -0.5f),

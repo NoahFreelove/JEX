@@ -1,6 +1,6 @@
 package org.JEX.Core.Levels;
 
-import org.JEX.Core.GameObjects.GameObject;
+import org.JEX.Core.Engine.GameObject;
 
 public class SearchQuery {
     public boolean found = false;
