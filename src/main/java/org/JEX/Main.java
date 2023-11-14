@@ -2,8 +2,8 @@ package org.JEX;
 
 import org.JEX.Core.Configs.JEXConfig;
 import org.JEX.Core.Configs.LevelConfig;
+import org.JEX.Core.Engine.GameObject;
 import org.JEX.Core.Engine.JEX;
-import org.JEX.Core.GameObjects.GameObject;
 import org.JEX.Core.GameObjects.Scripting.ILambdaScript;
 import org.JEX.Core.GameObjects.Scripting.LambdaScript;
 import org.JEX.Core.IO.Filepath;
@@ -34,13 +34,13 @@ public class Main {
         World world = new World(new LevelConfig("World1", LevelType.THIRD_DIMENSIONAL));
         instance.changeLevel(world);
 
-        GameObject triangle_object = new GameObject();
+        GameObject triangle_object = JEX.createGameObject();
         Model triangle = ModelLoader.loadModel(new Filepath("triangle.model", FilepathType.ClassLoader));
         GLRenderer renderer = getGlRenderer(triangle);
         triangle_object.setRenderer(renderer);
         world.add(triangle_object);
 
-        GameObject square_object = new GameObject();
+        GameObject square_object = JEX.createGameObject();
         Model square = ModelLoader.loadModel(new Filepath("square.model", FilepathType.ClassLoader));
         GLRenderer renderer_square = getGlRenderer(square);
         square_object.setRenderer(renderer_square);
@@ -54,7 +54,7 @@ public class Main {
         InputHandler.addAction("Horizontal", horiz);
         InputHandler.addAction("Vertical", vert);
         
-        square_object.addScript(new ILambdaScript() {
+        JEX.addLambdaScript(new ILambdaScript() {
             @Override
             public void update(float delta_time) {
                 if(horiz.isAnyPressed())
@@ -62,7 +62,7 @@ public class Main {
                 if(vert.isAnyPressed())
                     Log.print(vert.weight());
             }
-        });
+        }, square_object);
 
         Log.debug(square_object.getScripts().getSize());
 

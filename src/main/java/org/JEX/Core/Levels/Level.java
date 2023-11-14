@@ -2,7 +2,7 @@ package org.JEX.Core.Levels;
 
 import org.JEX.Audio.AudioListener;
 import org.JEX.Core.Configs.LevelConfig;
-import org.JEX.Core.GameObjects.GameObject;
+import org.JEX.Core.Engine.GameObject;
 import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Rendering.Renderers.Renderer;
 

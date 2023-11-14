@@ -1,13 +1,12 @@
 package org.JEX.Core.Levels;
 
 import org.JEX.Core.Configs.LevelConfig;
-import org.JEX.Core.GameObjects.GameObject;
+import org.JEX.Core.Engine.GameObject;
 import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Logs.Exceptions.ArgumentExceptions.NullArgumentException;
 import org.JEX.Logs.Log;
 import org.JEX.Rendering.Renderers.Renderer;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 

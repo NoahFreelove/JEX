@@ -1,13 +1,9 @@
 package org.JEX.Rendering.Renderers;
 
 import org.JEX.Core.Configs.LevelConfig;
+import org.JEX.Core.Engine.GameObject;
 import org.JEX.Core.Engine.Window.GraphicsAPI;
-import org.JEX.Core.GameObjects.GameObject;
-import org.JEX.Rendering.Shaders.ShaderBase;
 import org.JEX.Rendering.Shaders.ShaderProgram;
-import org.JEX.Rendering.VertexUtil.VertexObject;
-
-import static org.JEX.Logs.Log.print;
 
 public abstract class Renderer {
     private final GraphicsAPI api;
