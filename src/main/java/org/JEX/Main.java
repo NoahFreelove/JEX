@@ -4,8 +4,7 @@ import org.JEX.Core.Configs.JEXConfig;
 import org.JEX.Core.Configs.LevelConfig;
 import org.JEX.Core.Engine.GameObject;
 import org.JEX.Core.Engine.JEX;
-import org.JEX.Core.GameObjects.Scripting.ILambdaScript;
-import org.JEX.Core.GameObjects.Scripting.LambdaScript;
+import org.JEX.Core.Scripting.ILambdaScript;
 import org.JEX.Core.IO.Filepath;
 import org.JEX.Core.IO.FilepathType;
 import org.JEX.Core.IO.Resources.Model;
@@ -64,11 +63,6 @@ public class Main {
             }
         }, square_object);
 
-        Log.debug(square_object.getScripts().getSize());
-
-        JEX.instanceScript(LambdaScript.class, square_object);
-        Log.debug(square_object.getScripts().getSize());
-
     }
 
     private static GLRenderer getGlRenderer(Model m) {
@@ -76,10 +70,7 @@ public class Main {
         wrapper.queueBuffer();
 
         GLShader vertexShader = new GLShader(ShaderType.Vertex, new Filepath("vertex.glsl", FilepathType.ClassLoader));
-
         GLShader fragmentShader = new GLShader(ShaderType.Fragment, new Filepath("fragment.glsl", FilepathType.ClassLoader));
-
-
         GLRenderer renderer = new GLRenderer(vertexShader, fragmentShader);
 
         renderer.setVertexObject(wrapper);

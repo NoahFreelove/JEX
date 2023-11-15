@@ -1,4 +1,4 @@
-package org.JEX.Core.GameObjects.Scripting;
+package org.JEX.Core.Scripting;
 
 import org.JEX.Core.Engine.GameObject;
 

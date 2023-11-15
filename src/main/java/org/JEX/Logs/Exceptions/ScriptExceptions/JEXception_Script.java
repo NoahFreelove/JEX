@@ -1,6 +1,6 @@
 package org.JEX.Logs.Exceptions.ScriptExceptions;
 
-import org.JEX.Core.GameObjects.Scripting.Script;
+import org.JEX.Core.Scripting.Script;
 import org.JEX.Logs.Exceptions.JEXception;
 
 public class JEXception_Script extends JEXception {

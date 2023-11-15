@@ -5,9 +5,9 @@ import org.JEX.Core.Configs.JEXConfig;
 import org.JEX.Core.Engine.FunctionPipelines.FunctionPipeline;
 import org.JEX.Core.Engine.Window.GLFWWindow;
 import org.JEX.Core.Engine.Window.WindowCreationResult;
-import org.JEX.Core.GameObjects.Scripting.ILambdaScript;
-import org.JEX.Core.GameObjects.Scripting.LambdaScript;
-import org.JEX.Core.GameObjects.Scripting.Script;
+import org.JEX.Core.Scripting.ILambdaScript;
+import org.JEX.Core.Scripting.LambdaScript;
+import org.JEX.Core.Scripting.Script;
 import org.JEX.Core.Input.KeyboardHandler;
 import org.JEX.Core.Input.MouseHandler;
 import org.JEX.Core.Levels.Level;
@@ -335,6 +335,8 @@ public class JEX {
 
         private Script[] scripts;
 
+        private Transform transform = new Transform();
+
         public GameObjectInterface() {
             mem_ID = this.hashCode();
             tag = name_tag.hashCode();
@@ -469,5 +471,12 @@ public class JEX {
             has_renderer = true;
             renderer = r;
         }
-    }
+        public Transform getTransform(){
+            return transform;
+        }
+
+         public void setTransform(Transform t) {
+             this.transform = t;
+         }
+     }
 }

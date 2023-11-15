@@ -1,6 +1,6 @@
 package org.JEX.Logs.Exceptions.ScriptExceptions;
 
-import org.JEX.Core.GameObjects.Scripting.Script;
+import org.JEX.Core.Scripting.Script;
 
 public class InstanceCreationError extends JEXception_Script {
 

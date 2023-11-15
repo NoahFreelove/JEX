@@ -1,4 +1,4 @@
-package org.JEX.Core.GameObjects.Scripting;
+package org.JEX.Core.Scripting;
 
 public final class LambdaScript extends Script {
     private ILambdaScript script;
