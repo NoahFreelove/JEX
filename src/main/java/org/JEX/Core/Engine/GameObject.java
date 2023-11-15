@@ -1,6 +1,6 @@
 package org.JEX.Core.Engine;
 
-import org.JEX.Core.GameObjects.Scripting.Script;
+import org.JEX.Core.Scripting.Script;
 import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Rendering.Renderers.Renderer;
 
@@ -95,4 +95,12 @@ public class GameObject {
     public boolean removeScript(Script script){
         return object_reference.removeScript(script);
     }
+
+    public void addScript(Class<? extends Script> scriptClass) {
+        JEX.instanceScript(scriptClass,this);
+    }
+
+    public Transform getTransform(){return object_reference.getTransform();}
+
+    public void setTransform(Transform t){object_reference.setTransform(t);}
 }

@@ -1,6 +1,6 @@
 package org.JEX.Audio;
 
-import org.JEX.Core.GameObjects.Scripting.Script;
+import org.JEX.Core.Scripting.Script;
 
 public class AudioListener extends Script {
     private AudioListener(){

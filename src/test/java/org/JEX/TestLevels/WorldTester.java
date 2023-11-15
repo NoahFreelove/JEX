@@ -4,7 +4,7 @@ import org.JEX.Core.Configs.JEXConfig;
 import org.JEX.Core.Configs.LevelConfig;
 import org.JEX.Core.Engine.GameObject;
 import org.JEX.Core.Engine.JEX;
-import org.JEX.Core.GameObjects.Scripting.ILambdaScript;
+import org.JEX.Core.Scripting.ILambdaScript;
 import org.JEX.Core.IO.Resources.Model;
 import org.JEX.Core.Input.ITC;
 import org.JEX.Core.Input.KeyboardHandler;
