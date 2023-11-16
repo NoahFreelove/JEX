@@ -14,7 +14,10 @@ import org.JEX.Core.Input.InputCombo;
 import org.JEX.Core.Input.InputHandler;
 import org.JEX.Core.Levels.World;
 import org.JEX.Core.Levels.LevelType;
+import org.JEX.Core.Scripting.Script;
 import org.JEX.Logs.Log;
+import org.JEX.Rendering.Camera.Camera;
+import org.JEX.Rendering.Camera.ProjectionCamera;
 import org.JEX.Rendering.Renderers.GLRenderer;
 import org.JEX.Rendering.Shaders.OpenGL.GLShader;
 import org.JEX.Rendering.Shaders.ShaderType;
@@ -30,7 +33,10 @@ public class Main {
 
         JEX instance = JEX.startEngine(config, true);
 
-        World world = new World(new LevelConfig("World1", LevelType.THIRD_DIMENSIONAL));
+        GameObject cameraMan = JEX.createGameObject().addScript(ProjectionCamera.class);
+        Camera cam = (Camera) cameraMan.getScript(ProjectionCamera.class);
+
+        World world = new World(new LevelConfig("World1", LevelType.THIRD_DIMENSIONAL, cam));
         instance.changeLevel(world);
 
         GameObject triangle_object = JEX.createGameObject();

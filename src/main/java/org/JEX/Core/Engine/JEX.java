@@ -26,6 +26,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -295,11 +296,17 @@ public class JEX {
     }
 
     public static Script instanceScript(Class<? extends Script> clazz, GameObject target){
+        // if class is abstract, return null with InstanceCreationError
+        if(Modifier.isAbstract(clazz.getModifiers())){
+            Log.error(new InstanceCreationError("Cannot create instance of abstract class.", clazz, "returned null script."));
+            return null;
+        }
         try {
             Constructor<? extends Script> constructor = clazz.getDeclaredConstructor();
             constructor.setAccessible(true); // Make the constructor accessible
             Script newInstance = constructor.newInstance();
             target.object_reference.addScript(newInstance);
+            newInstance.addToObject(target);
             return newInstance;
             // Use the instance as needed
         } catch (Exception e) {
@@ -431,32 +438,20 @@ public class JEX {
             return true;
         }
 
-        public boolean removeScript(Script script){
-            for (int i = 0; i < scripts.length; i++) {
-                if(script == scripts[i])
-                {
-                    boolean result = removeScript(i);
-                    if(result)
-                        scripts[i].detach();
-                }
-            }
-            return false;
-        }
-
         public JEXIterator<Script> getScripts(){
             return new JEXIterator<>(scripts);
         }
 
         public void start(){
             getScripts().forEach(obj -> {
-                if(obj.isValid()){
+                if(obj.isEnabled()){
                     obj.start();
                 }
             });
         }
         public void update(float delta_time){
             getScripts().forEach(script -> {
-                if(script.isValid())
+                if(script.isEnabled())
                     script.update(delta_time);
             });
         }

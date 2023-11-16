@@ -98,7 +98,7 @@ public class World extends Level{
 
     @Override
     public HashMap<String, HashMap<String, String>>[] saveLevel() {
-        return new HashMap[0];
+        return null;
     }
 
     @Override

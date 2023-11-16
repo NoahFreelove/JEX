@@ -1,6 +1,7 @@
 package org.JEX.Logs;
 
 import org.JEX.Logs.Exceptions.JEXception;
+import org.joml.Vector3f;
 
 import static org.JEX.Core.Engine.JEX.active_config;
 
@@ -18,7 +19,7 @@ public class Log {
     }
 
     public static void warn(String warning){
-        if(active_config().log_warnings() && active_config().enable_logs())
+        if(!active_config().log_warnings() || !active_config().enable_logs())
             return;
 
         System.out.println("WARN: " + warning);
@@ -42,6 +43,9 @@ public class Log {
     }
     public static void print(Object message){
         print(message.toString());
+    }
+    public static void print(Vector3f message){
+        print("(" + message.x() + ", " + message.y() + ", " + message.z() + ")");
     }
 
     public static void debug(String message){

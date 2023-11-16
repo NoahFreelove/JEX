@@ -126,6 +126,6 @@ public class GLShaderProgram extends ShaderProgram {
     }
 
     private int programID(){
-        return identificationModule.getGL_PROGRAM();
+        return (identificationModule == null)? -1 : identificationModule.getGL_PROGRAM();
     }
 }
