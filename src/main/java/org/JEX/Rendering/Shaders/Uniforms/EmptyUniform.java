@@ -11,4 +11,9 @@ public class EmptyUniform extends ShaderUniform<Object>{
     public void setUniform(int program) {
 
     }
+
+    @Override
+    protected boolean isLocationValid() {
+        return true;
+    }
 }

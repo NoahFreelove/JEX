@@ -1,7 +1,10 @@
 package org.JEX.Core.Engine;
 
-import org.JEX.Core.GameObjects.Scripting.Script;
+import org.JEX.Core.Scripting.Script;
+import org.JEX.Core.Util.JEXIterableBool;
 import org.JEX.Core.Util.JEXIterator;
+import org.JEX.Logs.Exceptions.ScriptExceptions.JEXception_Script;
+import org.JEX.Logs.Log;
 import org.JEX.Rendering.Renderers.Renderer;
 
 import java.util.HashMap;
@@ -67,14 +70,14 @@ public class GameObject {
 
     public void start(){
         object_reference.getScripts().forEach(obj -> {
-            if(obj.isValid()){
+            if(obj.isEnabled()){
                 obj.start();
             }
         });
     }
     public void update(float delta_time){
         object_reference.getScripts().forEach(script -> {
-            if(script.isValid())
+            if(script.isEnabled())
                 script.update(delta_time);
         });
     }
@@ -88,11 +91,31 @@ public class GameObject {
         return object_reference.getScripts();
     }
 
-    public boolean removeScript(int index){
-        return object_reference.removeScript(index);
+    public GameObject addScript(Class<? extends Script> scriptClass) {
+        JEX.instanceScript(scriptClass,this);
+        return this;
     }
 
-    public boolean removeScript(Script script){
-        return object_reference.removeScript(script);
+    public Transform getTransform(){return object_reference.getTransform();}
+
+    public void setTransform(Transform t){object_reference.setTransform(t);}
+
+    public Script getScript(Class<? extends Script> scriptClass) {
+        final Script[] found = {null};
+        object_reference.getScripts().forEachBool(obj -> {
+            if(obj.getClass() == scriptClass)
+            {
+                found[0] = obj;
+                return true;
+            }
+            return false;
+        });
+
+        if(found[0] != null){
+            return found[0];
+        }
+        Log.error(new JEXception_Script("Could not find class: '" + scriptClass.getSimpleName() + "' when performing" +
+                " getScript().", "returned null!"));
+        return null;
     }
 }

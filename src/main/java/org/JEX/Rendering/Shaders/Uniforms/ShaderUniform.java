@@ -19,7 +19,7 @@ public abstract class ShaderUniform<T> {
         this.name = name;
     }
 
-    void setValue(T value){
+    public void setValue(T value){
         this.value = value;
     }
 
@@ -34,4 +34,6 @@ public abstract class ShaderUniform<T> {
     // Need to change this from int program to some object so it works for
     // OpenGL and Vulkan
     public abstract void setUniform(int program);
+
+    protected abstract boolean isLocationValid();
 }

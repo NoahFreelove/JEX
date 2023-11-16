@@ -4,8 +4,7 @@ import org.JEX.Core.Configs.JEXConfig;
 import org.JEX.Core.Configs.LevelConfig;
 import org.JEX.Core.Engine.GameObject;
 import org.JEX.Core.Engine.JEX;
-import org.JEX.Core.GameObjects.Scripting.ILambdaScript;
-import org.JEX.Core.GameObjects.Scripting.LambdaScript;
+import org.JEX.Core.Scripting.ILambdaScript;
 import org.JEX.Core.IO.Filepath;
 import org.JEX.Core.IO.FilepathType;
 import org.JEX.Core.IO.Resources.Model;
@@ -15,7 +14,10 @@ import org.JEX.Core.Input.InputCombo;
 import org.JEX.Core.Input.InputHandler;
 import org.JEX.Core.Levels.World;
 import org.JEX.Core.Levels.LevelType;
+import org.JEX.Core.Scripting.Script;
 import org.JEX.Logs.Log;
+import org.JEX.Rendering.Camera.Camera;
+import org.JEX.Rendering.Camera.ProjectionCamera;
 import org.JEX.Rendering.Renderers.GLRenderer;
 import org.JEX.Rendering.Shaders.OpenGL.GLShader;
 import org.JEX.Rendering.Shaders.ShaderType;
@@ -31,7 +33,10 @@ public class Main {
 
         JEX instance = JEX.startEngine(config, true);
 
-        World world = new World(new LevelConfig("World1", LevelType.THIRD_DIMENSIONAL));
+        GameObject cameraMan = JEX.createGameObject().addScript(ProjectionCamera.class);
+        Camera cam = (Camera) cameraMan.getScript(ProjectionCamera.class);
+
+        World world = new World(new LevelConfig("World1", LevelType.THIRD_DIMENSIONAL, cam));
         instance.changeLevel(world);
 
         GameObject triangle_object = JEX.createGameObject();
@@ -64,11 +69,6 @@ public class Main {
             }
         }, square_object);
 
-        Log.debug(square_object.getScripts().getSize());
-
-        JEX.instanceScript(LambdaScript.class, square_object);
-        Log.debug(square_object.getScripts().getSize());
-
     }
 
     private static GLRenderer getGlRenderer(Model m) {
@@ -76,10 +76,7 @@ public class Main {
         wrapper.queueBuffer();
 
         GLShader vertexShader = new GLShader(ShaderType.Vertex, new Filepath("vertex.glsl", FilepathType.ClassLoader));
-
         GLShader fragmentShader = new GLShader(ShaderType.Fragment, new Filepath("fragment.glsl", FilepathType.ClassLoader));
-
-
         GLRenderer renderer = new GLRenderer(vertexShader, fragmentShader);
 
         renderer.setVertexObject(wrapper);
