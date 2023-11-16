@@ -7,6 +7,7 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL46;
 
 public class Vector4fUniform extends ShaderUniform<Vector4f> {
+    int location = -1;
     public Vector4fUniform(String name) {
         super(name, new Vector4f(), GraphicsAPI.OpenGL);
     }
@@ -22,8 +23,16 @@ public class Vector4fUniform extends ShaderUniform<Vector4f> {
     @EngineThread
     public void setUniform(int program) {
         if(api == GraphicsAPI.OpenGL){
-            int location = GL46.glGetUniformLocation(program, name);
-            GL46.glUniform4f(location, value.x, value.y, value.z, value.w);
+            if(!isLocationValid()){
+                location = GL46.glGetUniformLocation(program, name);
+            }
+            if (location != -1)
+                GL46.glUniform4f(location, value.x, value.y, value.z, value.w);
         }
+    }
+
+    @Override
+    protected boolean isLocationValid() {
+        return location != -1;
     }
 }

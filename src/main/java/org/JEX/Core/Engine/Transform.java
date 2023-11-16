@@ -77,4 +77,16 @@ public class Transform {
     public void scale(float x, float y, float z){
         this.scale.add(x,y,z);
     }
+
+    public void add(Transform t){
+        position.add(t.position);
+        rotation.add(t.rotation);
+        scale.add(t.scale);
+    }
+
+    public void add(float x, float y, float z, float rx, float ry, float rz, float rw, float sx, float sy, float sz){
+        position.add(x,y,z);
+        rotation.add(rx,ry,rz,rw);
+        scale.add(sx,sy,sz);
+    }
 }
