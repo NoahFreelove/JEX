@@ -16,13 +16,15 @@ public class TransformUniform extends ShaderUniform<Transform> {
     @Override
     public void setUniform(int program) {
         if (api == GraphicsAPI.OpenGL) {
-            if(!isLocationValid()){
+            if (!isLocationValid()) {
                 posLocation = GL46.glGetUniformLocation(program, "JEXpos");
                 rotLocation = GL46.glGetUniformLocation(program, "JEXrot");
                 scaleLocation = GL46.glGetUniformLocation(program, "JEXscale");
             }
-            if(posLocation != -1)
+            if (posLocation != -1)
+            {
                 GL46.glUniform3f(posLocation, value.position().x(), value.position().y(), value.position().z());
+            }
             if(rotLocation != -1)
                 GL46.glUniform4f(rotLocation, value.rotation().x(), value.rotation().y(), value.rotation().z(), value.rotation().w());
             if(scaleLocation != -1)

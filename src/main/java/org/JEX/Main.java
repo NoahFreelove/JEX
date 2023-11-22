@@ -14,7 +14,6 @@ import org.JEX.Core.Input.InputCombo;
 import org.JEX.Core.Input.InputHandler;
 import org.JEX.Core.Levels.World;
 import org.JEX.Core.Levels.LevelType;
-import org.JEX.Core.Scripting.Script;
 import org.JEX.Logs.Log;
 import org.JEX.Rendering.Camera.Camera;
 import org.JEX.Rendering.Camera.ProjectionCamera;
@@ -35,6 +34,7 @@ public class Main {
 
         GameObject cameraMan = JEX.createGameObject().addScript(ProjectionCamera.class);
         Camera cam = (Camera) cameraMan.getScript(ProjectionCamera.class);
+        cameraMan.getTransform().translate(0,0,1);
 
         World world = new World(new LevelConfig("World1", LevelType.THIRD_DIMENSIONAL, cam));
         instance.changeLevel(world);
