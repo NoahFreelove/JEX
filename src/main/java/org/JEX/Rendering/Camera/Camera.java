@@ -1,6 +1,8 @@
 package org.JEX.Rendering.Camera;
 
+import org.JEX.Core.Engine.Transform;
 import org.JEX.Core.Scripting.Script;
+import org.JEX.Logs.Log;
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
@@ -10,26 +12,28 @@ public abstract class Camera extends Script {
 
     public abstract Matrix4f getViewMatrix();
     public abstract Matrix4f getProjectionMatrix();
-    public abstract Matrix4f getModelMatrix();
+    public abstract Matrix4f getModelMatrix(Transform t);
 
-    public FloatBuffer getModelMatrixBuffer() {
-        return BufferUtils.createFloatBuffer(16).put(getModelMatrix().get(new float[16]));
+    public FloatBuffer getModelMatrixBuffer(Transform t) {
+        return getModelMatrix(t).get(BufferUtils.createFloatBuffer(16));
     }
 
     public FloatBuffer getViewMatrixBuffer() {
-        return BufferUtils.createFloatBuffer(16).put(getViewMatrix().get(new float[16]));
+        return getViewMatrix().get(BufferUtils.createFloatBuffer(16));
     }
 
     public FloatBuffer getProjectionMatrixBuffer() {
-        return BufferUtils.createFloatBuffer(16).put(getProjectionMatrix().get(new float[16]));
+        return getProjectionMatrix().get(BufferUtils.createFloatBuffer(16));
     }
 
-    public FloatBuffer getMVPMatrixBuffer() {
-        return BufferUtils.createFloatBuffer(16).put(getMVPMatrix().get(new float[16]));
+    public FloatBuffer getMVPMatrixBuffer(Transform t) {
+        return getMVPMatrix(t).get(BufferUtils.createFloatBuffer(16));
     }
 
-    public Matrix4f getMVPMatrix() {
-        return getProjectionMatrix().mul(getViewMatrix()).mul(getModelMatrix());
+    private final Matrix4f mvpMatrix = new Matrix4f();
+    public Matrix4f getMVPMatrix(Transform t) {
+        mvpMatrix.identity().mul(getProjectionMatrix()).mul(getViewMatrix()).mul(getModelMatrix(t));
+        return mvpMatrix;
     }
 
 
