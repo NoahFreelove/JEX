@@ -74,4 +74,40 @@ public class ProjectionCamera extends Camera{
         return modelMatrix;
     }
 
+    public void setHorizAngle(float horizAngle) {
+        this.horizAngle = horizAngle;
+    }
+
+    public void setVertAngle(float vertAngle) {
+        this.vertAngle = vertAngle;
+    }
+
+    public void rotHorizAngle(float horizAngle) {
+        this.horizAngle += horizAngle;
+    }
+
+    public void rotVertAngle(float vertAngle) {
+        this.vertAngle += vertAngle;
+    }
+
+    public float getHorizAngle() {
+        return horizAngle;
+    }
+
+    public float getVertAngle() {
+        return vertAngle;
+    }
+
+    public Vector3f getRight() {
+        return right;
+    }
+
+    public Vector3f getUp() {
+        return up;
+    }
+
+    public Vector3f getForward() {
+        return forward;
+    }
+
 }

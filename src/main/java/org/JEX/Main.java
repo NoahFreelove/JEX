@@ -22,6 +22,7 @@ import org.JEX.Rendering.Shaders.OpenGL.GLShader;
 import org.JEX.Rendering.Shaders.ShaderType;
 import org.JEX.Rendering.Shaders.Uniforms.Vector4fUniform;
 import org.JEX.Rendering.VertexUtil.VertexObjectGLWrapper;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import java.util.Arrays;
@@ -35,14 +36,14 @@ public class Main {
         JEX instance = JEX.startEngine(config, true);
 
         GameObject cameraMan = JEX.createGameObject().addScript(ProjectionCamera.class);
-        Camera cam = (Camera) cameraMan.getScript(ProjectionCamera.class);
+        ProjectionCamera cam = (ProjectionCamera) cameraMan.getScript(ProjectionCamera.class);
         cameraMan.getTransform().translate(0,0,10);
 
         World world = new World(new LevelConfig("World1", LevelType.THIRD_DIMENSIONAL, cam));
         instance.changeLevel(world);
 
         GameObject triangle_object = JEX.createGameObject();
-        Model triangle = ModelLoader.loadModel(new Filepath("triangle.model", FilepathType.ClassLoader));
+        Model triangle = ModelLoader.loadModel(new Filepath("cube.model", FilepathType.ClassLoader));
         GLRenderer renderer = getGlRenderer(triangle);
         triangle_object.setRenderer(renderer);
         world.add(triangle_object);
@@ -54,19 +55,39 @@ public class Main {
         InputCombo zAxis = new InputCombo(new int[]{ITC.keyCode("W"), ITC.keyCode("S")}, new float[]{1,-1});
         InputCombo yAxis = new InputCombo(new int[]{ITC.keyCode("Q"), ITC.keyCode("E")}, new float[]{-1,1});
 
+        InputCombo mouseX = new InputCombo(new int[]{ITC.keyCode("LEFT"), ITC.keyCode("RIGHT")}, new float[]{-1,1});
+        InputCombo mouseY = new InputCombo(new int[]{ITC.keyCode("UP"), ITC.keyCode("DOWN")}, new float[]{-1,1});
+
         InputHandler.addAction("Horizontal", xAxis);
         InputHandler.addAction("ZAxis", zAxis);
         InputHandler.addAction("Vertical", yAxis);
-        
+        InputHandler.addAction("MouseX", mouseX);
+        InputHandler.addAction("MouseY", mouseY);
+
+        Vector3f right = new Vector3f(1,0,0);
+        Vector3f forward = new Vector3f(0,0,1);
+
         JEX.addLambdaScript(new ILambdaScript() {
             @Override
             public void update(float delta_time) {
-                if(xAxis.isAnyPressed())
-                    cameraMan.getTransform().translate(xAxis.weight()*0.1f, 0, 0);
-                if(zAxis.isAnyPressed())
-                    cameraMan.getTransform().translate(0, 0, -zAxis.weight()*0.1f);
-                if(yAxis.isAnyPressed())
+                if(xAxis.isAnyPressed()) {
+                    right.set(cam.getRight()).mul(xAxis.weight()*0.1f);
+                    cameraMan.getTransform().translate(right);
+                }
+                if(zAxis.isAnyPressed()) {
+                    forward.set(cam.getForward()).mul(zAxis.weight()*0.1f);
+                    cameraMan.getTransform().translate(forward);
+                }
+                if(yAxis.isAnyPressed()) {
                     cameraMan.getTransform().translate(0, yAxis.weight()*0.1f, 0);
+                }
+                if(mouseX.isAnyPressed()) {
+                    cam.rotHorizAngle(-mouseX.weight() * JEX.getInstance().getWindow().getDeltaTime());
+                }
+                if(mouseY.isAnyPressed()) {
+                    cam.rotVertAngle(-mouseY.weight() * JEX.getInstance().getWindow().getDeltaTime());
+                }
+
             }
         }, triangle_object);
     }
