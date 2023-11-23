@@ -32,7 +32,7 @@ public class ProjectionCamera extends Camera{
     }
 
     private final Matrix4f viewMatrix = new Matrix4f();
-    private final Vector3f addedPos = new Vector3f();
+    private final Vector3f dest = new Vector3f();
     @Override
     public Matrix4f getViewMatrix() {
         Transform t = getTransform();
@@ -50,9 +50,9 @@ public class ProjectionCamera extends Camera{
         up = new Vector3f();
         right.cross(direction,up);
 
-        addedPos.set(t.position()).add(direction);
+        t.position().add(direction, dest);
 
-        viewMatrix.lookAt(new Vector3f().add(t.position()),addedPos,up);
+        viewMatrix.lookAt(new Vector3f().add(t.position()),dest,up);
         return viewMatrix;
     }
 

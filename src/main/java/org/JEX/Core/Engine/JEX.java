@@ -307,16 +307,17 @@ public class JEX {
             Script newInstance = constructor.newInstance();
             target.object_reference.addScript(newInstance);
             newInstance.addToObject(target);
+            newInstance.setEnabled(true);
             return newInstance;
             // Use the instance as needed
         } catch (Exception e) {
             Log.error(new InstanceCreationError("Error when trying to create new instance.", clazz, "returned null script."));
+            return null;
         }
-        return null;
     }
 
     public static void addLambdaScript(ILambdaScript script, GameObject target){
-        target.object_reference.addScript(script);
+        target.object_reference.addScript(script).addToObject(target);
     }
 
     public static boolean isRunning(){
@@ -332,6 +333,7 @@ public class JEX {
     }
 
      class GameObjectInterface {
+        private boolean isActive = true;
         private boolean has_renderer;
         private Renderer renderer;
 
@@ -402,8 +404,11 @@ public class JEX {
             this.name_tag = name_tag;
             this.tag = this.name_tag.hashCode();
         }
-        private boolean addScript(ILambdaScript lambdaScript){
-            return addScript(new LambdaScript(lambdaScript));
+        private LambdaScript addScript(ILambdaScript lambdaScript){
+            LambdaScript output = new LambdaScript(lambdaScript);
+            output.setEnabled(true);
+            addScript(output);
+            return output;
         }
 
         private boolean addScript(Script script){
@@ -443,6 +448,8 @@ public class JEX {
         }
 
         public void start(){
+            if(!isActive)
+                return;
             getScripts().forEach(obj -> {
                 if(obj.isEnabled()){
                     obj.start();
@@ -450,9 +457,12 @@ public class JEX {
             });
         }
         public void update(float delta_time){
+            if(!isActive)
+                return;
             getScripts().forEach(script -> {
-                if(script.isEnabled())
+                if(script.isEnabled()) {
                     script.update(delta_time);
+                }
             });
         }
 
@@ -470,8 +480,15 @@ public class JEX {
             return transform;
         }
 
-         public void setTransform(Transform t) {
+        public void setTransform(Transform t) {
              this.transform = t;
          }
+
+        public void setActive(boolean val){
+            this.isActive = val;
+        }
+        public boolean isActive(){
+            return isActive;
+        }
      }
 }

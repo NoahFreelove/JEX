@@ -12,6 +12,6 @@ uniform vec3 JEXpos;
 
 void main() {
     // multiply by new identity matrix
-    gl_Position = vec4(vertexPos, 1.0) * JEXMVP;
+    gl_Position = JEXMVP*vec4(vertexPos, 1.0);
 
 }

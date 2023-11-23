@@ -49,7 +49,6 @@ public class Script implements Save,Load {
             return;
 
         this.reference = newParent;
-        enabled = true;
     }
 
     public Transform getTransform(){

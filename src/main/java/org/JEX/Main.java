@@ -24,6 +24,8 @@ import org.JEX.Rendering.Shaders.Uniforms.Vector4fUniform;
 import org.JEX.Rendering.VertexUtil.VertexObjectGLWrapper;
 import org.joml.Vector4f;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
@@ -34,7 +36,7 @@ public class Main {
 
         GameObject cameraMan = JEX.createGameObject().addScript(ProjectionCamera.class);
         Camera cam = (Camera) cameraMan.getScript(ProjectionCamera.class);
-        cameraMan.getTransform().translate(0,0,1);
+        cameraMan.getTransform().translate(0,0,10);
 
         World world = new World(new LevelConfig("World1", LevelType.THIRD_DIMENSIONAL, cam));
         instance.changeLevel(world);
@@ -44,31 +46,29 @@ public class Main {
         GLRenderer renderer = getGlRenderer(triangle);
         triangle_object.setRenderer(renderer);
         world.add(triangle_object);
+        world.add(cameraMan);
 
-        GameObject square_object = JEX.createGameObject();
-        Model square = ModelLoader.loadModel(new Filepath("square.model", FilepathType.ClassLoader));
-        GLRenderer renderer_square = getGlRenderer(square);
-        square_object.setRenderer(renderer_square);
-        world.add(square_object);
+        renderer.getGLShaderProgram().addUniform(new Vector4fUniform("color", new Vector4f(0.5f, 0.5f, 0, 1)));
 
-        renderer.getGLShaderProgram().addUniform(new Vector4fUniform("color", new Vector4f(1, 0, 0, 1)));
-        renderer_square.getGLShaderProgram().addUniform(new Vector4fUniform("color", new Vector4f(0, 0.5f, 0.5f, 1)));
+        InputCombo xAxis = new InputCombo(new int[]{ITC.keyCode("A"), ITC.keyCode("D")}, new float[]{-1,1});
+        InputCombo zAxis = new InputCombo(new int[]{ITC.keyCode("W"), ITC.keyCode("S")}, new float[]{1,-1});
+        InputCombo yAxis = new InputCombo(new int[]{ITC.keyCode("Q"), ITC.keyCode("E")}, new float[]{-1,1});
 
-        InputCombo horiz = new InputCombo(new int[]{ITC.keyCode("A"), ITC.keyCode("D")}, new float[]{-1,1});
-        InputCombo vert = new InputCombo(new int[]{ITC.keyCode("W"), ITC.keyCode("S")}, new float[]{1,-1});
-        InputHandler.addAction("Horizontal", horiz);
-        InputHandler.addAction("Vertical", vert);
+        InputHandler.addAction("Horizontal", xAxis);
+        InputHandler.addAction("ZAxis", zAxis);
+        InputHandler.addAction("Vertical", yAxis);
         
         JEX.addLambdaScript(new ILambdaScript() {
             @Override
             public void update(float delta_time) {
-                if(horiz.isAnyPressed())
-                    Log.print(horiz.weight());
-                if(vert.isAnyPressed())
-                    Log.print(vert.weight());
+                if(xAxis.isAnyPressed())
+                    cameraMan.getTransform().translate(xAxis.weight()*0.1f, 0, 0);
+                if(zAxis.isAnyPressed())
+                    cameraMan.getTransform().translate(0, 0, -zAxis.weight()*0.1f);
+                if(yAxis.isAnyPressed())
+                    cameraMan.getTransform().translate(0, yAxis.weight()*0.1f, 0);
             }
-        }, square_object);
-
+        }, triangle_object);
     }
 
     private static GLRenderer getGlRenderer(Model m) {
