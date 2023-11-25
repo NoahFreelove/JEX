@@ -1,6 +1,5 @@
 package org.JEX.Core.IO.Resources;
 
-import org.JEX.Core.IO.Filepath;
 import org.JEX.Logs.Exceptions.IOExceptions.FileReadException;
 import org.JEX.Logs.Exceptions.IOExceptions.ParseException;
 import org.JEX.Logs.Log;
@@ -8,9 +7,8 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class ModelLoader10 extends ModelLoader{
+public class ModelLoader10 extends ModelLoader {
     ArrayList<Vector3f> verts = new ArrayList<>();
     ArrayList<Vector3f> normals = new ArrayList<>();
     ArrayList<Vector2f> uvs = new ArrayList<>();
@@ -26,7 +24,7 @@ public class ModelLoader10 extends ModelLoader{
     }
 
     protected boolean checkMode(String line){
-        switch (line) {
+        switch (line.strip()) {
             case "verts" -> {
                 mode = 0;
                 return true;
@@ -97,6 +95,7 @@ public class ModelLoader10 extends ModelLoader{
         Vector3f[] vertsArr = new Vector3f[verts.size()];
         Vector3f[] normalsArr = new Vector3f[normals.size()];
         Vector2f[] uvsArr = new Vector2f[uvs.size()];
+
         verts.toArray(vertsArr);
         normals.toArray(normalsArr);
         uvs.toArray(uvsArr);

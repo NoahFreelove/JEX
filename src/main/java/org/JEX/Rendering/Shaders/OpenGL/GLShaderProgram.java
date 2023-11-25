@@ -1,10 +1,13 @@
 package org.JEX.Rendering.Shaders.OpenGL;
 
 import org.JEX.Core.Annotations.EngineThread;
+import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Rendering.Shaders.ShaderProgramIdentification;
 import org.JEX.Rendering.Shaders.ShaderProgram;
 import org.JEX.Rendering.Shaders.ShaderType;
 import org.lwjgl.opengl.GL46;
+
+import java.util.ArrayList;
 
 public class GLShaderProgram extends ShaderProgram {
 
@@ -13,9 +16,8 @@ public class GLShaderProgram extends ShaderProgram {
     protected GLShader geometryShader;
     protected GLShader computerShader;
 
-    private int vertexLocation = 0;
-    private int normalLocation = 1;
-    private int uvLocation = 2;
+    protected ArrayList<GLLayout> layouts = new ArrayList<>();
+    protected JEXIterator<GLLayout> layoutIterator = new JEXIterator<GLLayout>(new GLLayout[0]);
 
     public GLShaderProgram(){
         vertexShader = new GLShader(ShaderType.Vertex);
@@ -52,6 +54,14 @@ public class GLShaderProgram extends ShaderProgram {
         if(isValid()){
             GL46.glUseProgram(programID());
             setUniforms();
+            bindLayouts();
+        }
+    }
+
+    public void disableShader(){
+        if(isValid()){
+            unbindLayouts();
+            GL46.glUseProgram(0);
         }
     }
 
@@ -93,39 +103,39 @@ public class GLShaderProgram extends ShaderProgram {
         isValid = true;
     }
 
-
-
-    public int getVertexLocation() {
-        return vertexLocation;
-    }
-
-    public void setDefaultVertexLocation(int vertexLocation) {
-        this.vertexLocation = vertexLocation;
-    }
-
-    public int getNormalLocation() {
-        return normalLocation;
-    }
-
-    public void setDefaultNormalLocation(int normalLocation) {
-        this.normalLocation = normalLocation;
-    }
-
-    public int getUvLocation() {
-        return uvLocation;
-    }
-
-    public void setDefaultUvLocation(int uvLocation) {
-        this.uvLocation = uvLocation;
-    }
-
     @Override
     protected void setUniforms() {
         uniformIterator.reset();
         uniformIterator.forEach((uni) -> uni.setUniform(programID()));
     }
 
+    @Override
+    protected void bindLayouts() {
+        layoutIterator.reset();
+        layoutIterator.forEach(GLLayout::bind);
+    }
+
+    @Override
+    protected void unbindLayouts() {
+        layoutIterator.reset();
+        layoutIterator.forEach(GLLayout::unbind);
+    }
+
     private int programID(){
         return (identificationModule == null)? -1 : identificationModule.getGL_PROGRAM();
+    }
+
+    public void addLayout(GLLayout layout){
+        if(layouts == null || layouts.contains(layout))
+            return;
+        this.layouts.add(layout);
+        layoutIterator = new JEXIterator<GLLayout>(layouts.toArray(new GLLayout[0]));
+    }
+
+    public void removeLayout(GLLayout layout){
+        if(layouts == null || !layouts.contains(layout))
+            return;
+        this.layouts.remove(layout);
+        layoutIterator = new JEXIterator<GLLayout>(layouts.toArray(new GLLayout[0]));
     }
 }

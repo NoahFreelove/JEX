@@ -69,17 +69,10 @@ public class GameObject {
     }
 
     public void start(){
-        object_reference.getScripts().forEach(obj -> {
-            if(obj.isEnabled()){
-                obj.start();
-            }
-        });
+        object_reference.start();
     }
     public void update(float delta_time){
-        object_reference.getScripts().forEach(script -> {
-            if(script.isEnabled())
-                script.update(delta_time);
-        });
+        object_reference.update(delta_time);
     }
 
     public void setRenderer(Renderer r){
@@ -117,5 +110,13 @@ public class GameObject {
         Log.error(new JEXception_Script("Could not find class: '" + scriptClass.getSimpleName() + "' when performing" +
                 " getScript().", "returned null!"));
         return null;
+    }
+
+    public void setActive(boolean val){
+        object_reference.setActive(val);
+    }
+
+    public boolean isActive(){
+        return object_reference.isActive();
     }
 }

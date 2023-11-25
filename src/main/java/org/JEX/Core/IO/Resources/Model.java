@@ -66,4 +66,9 @@ public class Model {
     public void setUvs(Vector2f[] uvs) {
         this.uvs = uvs;
     }
+
+    @Override
+    public String toString(){
+        return "Model: " + verts.length + " verts, " + normals.length + " normals, " + uvs.length + " uvs";
+    }
 }

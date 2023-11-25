@@ -6,7 +6,7 @@ import org.joml.Vector4f;
 public class Transform {
     Vector3f position = new Vector3f();
     Vector4f rotation = new Vector4f();
-    Vector3f scale = new Vector3f();
+    Vector3f scale = new Vector3f(1,1,1);
 
     public Transform() {
     }
@@ -75,7 +75,7 @@ public class Transform {
     }
 
     public void scale(float x, float y, float z){
-        this.scale.add(x,y,z);
+        this.scale.mul(x,y,z);
     }
 
     public void add(Transform t){

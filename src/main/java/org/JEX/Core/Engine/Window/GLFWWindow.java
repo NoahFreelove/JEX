@@ -23,6 +23,7 @@ public class GLFWWindow {
     private long update_millis = 1000L / 60L; // 60 FPS
     private long delta_nanos = 0L;
     private float delta = 0.0f;
+    private float aspect_ratio = 0.0f;
     public GLFWWindow(){}
 
     @EngineThread
@@ -39,6 +40,8 @@ public class GLFWWindow {
 
         handle = glfwCreateWindow(width, height, title, monitor, share);
 
+        aspect_ratio = (float)width / (float)height;
+
         if(handle == -1L){
             return WindowCreationResult.WINDOW_CREATION_FAILED;
         }
@@ -53,7 +56,6 @@ public class GLFWWindow {
     public long getHandle(){
         return handle;
     }
-
 
     public int getWindowWidth() {
         return window_width;
@@ -119,6 +121,10 @@ public class GLFWWindow {
 
         }
 
+    }
+
+    public float getAspectRatio(){
+        return aspect_ratio;
     }
 
     private static void setupDebugMessageCallback() {

@@ -34,7 +34,8 @@ public abstract class Renderer {
         }
         if(addedDefaultUniforms){
             transformUniform.setValue(config.getActiveCamera().getTransform());
-            mvpUniform.setValue(config.getActiveCamera());
+            mvpUniform.setValue(objectPointer.getTransform());
+            mvpUniform.setCamera(config.getActiveCamera());
         }
         render();
     }
