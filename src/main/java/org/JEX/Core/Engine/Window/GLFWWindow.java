@@ -57,7 +57,6 @@ public class GLFWWindow {
         return handle;
     }
 
-
     public int getWindowWidth() {
         return window_width;
     }

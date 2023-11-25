@@ -51,6 +51,8 @@ public class GLRenderer extends Renderer {
 
         vertexObject.unbindBuffers();
 
+        castedShaderProgram.disableShader();
+
         //System.out.println("Drawing " + vertexObject.vertLen() + " vertices");
     }
 

@@ -3,6 +3,7 @@ package org.JEX.Rendering.Shaders;
 import org.JEX.Core.Annotations.EngineThread;
 import org.JEX.Core.Util.JEXIterator;
 import org.JEX.Logs.Log;
+import org.JEX.Rendering.Shaders.OpenGL.GLLayout;
 import org.JEX.Rendering.Shaders.Uniforms.EmptyUniform;
 import org.JEX.Rendering.Shaders.Uniforms.ShaderUniform;
 
@@ -17,6 +18,12 @@ public abstract class ShaderProgram {
 
     @EngineThread
     protected abstract void setUniforms();
+
+    @EngineThread
+    protected abstract void bindLayouts();
+
+    @EngineThread
+    protected abstract void unbindLayouts();
 
     public void addUniform(ShaderUniform<?> uni){
         if(uniforms == null || uniforms.contains(uni))

@@ -18,6 +18,7 @@ import org.JEX.Logs.Log;
 import org.JEX.Rendering.Camera.Camera;
 import org.JEX.Rendering.Camera.ProjectionCamera;
 import org.JEX.Rendering.Renderers.GLRenderer;
+import org.JEX.Rendering.Shaders.OpenGL.GLLayout;
 import org.JEX.Rendering.Shaders.OpenGL.GLShader;
 import org.JEX.Rendering.Shaders.ShaderType;
 import org.JEX.Rendering.Shaders.Uniforms.Vector4fUniform;
@@ -31,6 +32,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
         // TODO: Resource Manager
+        // TODO: Custom data additions to model loader
         JEXConfig config = JEXConfig.createFromFile(new Filepath("config.txt", FilepathType.ClassLoader));
 
         JEX instance = JEX.startEngine(config, true);
@@ -49,7 +51,18 @@ public class Main {
         world.add(triangle_object);
         world.add(cameraMan);
 
-        renderer.getGLShaderProgram().addUniform(new Vector4fUniform("color", new Vector4f(0.5f, 0.5f, 0, 1)));
+        //renderer.getGLShaderProgram().addUniform(new Vector4fUniform("color", new Vector4f(0.5f, 0.5f, 0, 1)));
+
+        // Create Vector4 colors for a cube
+        Vector4f[] colors = new Vector4f[triangle.getVerts().length];
+        // Randomize colors
+        for (int i = 0; i < colors.length; i++) {
+            colors[i] = new Vector4f((float)Math.random(), (float)Math.random(), (float)Math.random(), 1);
+        }
+        GLLayout colorLayout = new GLLayout(colors);
+        colorLayout.queueBuffer();
+        colorLayout.setLocation(3);
+        renderer.getGLShaderProgram().addLayout(colorLayout);
 
         InputCombo xAxis = new InputCombo(new int[]{ITC.keyCode("A"), ITC.keyCode("D")}, new float[]{-1,1});
         InputCombo zAxis = new InputCombo(new int[]{ITC.keyCode("W"), ITC.keyCode("S")}, new float[]{1,-1});
@@ -87,14 +100,14 @@ public class Main {
                 if(mouseY.isAnyPressed()) {
                     cam.rotVertAngle(-mouseY.weight() * JEX.getInstance().getWindow().getDeltaTime());
                 }
-
+                //triangle_object.getTransform().rotate(1,0,0,0);
             }
         }, triangle_object);
     }
 
     private static GLRenderer getGlRenderer(Model m) {
         VertexObjectGLWrapper wrapper = new VertexObjectGLWrapper(m);
-        wrapper.queueBuffer();
+        wrapper.buffer();
 
         GLShader vertexShader = new GLShader(ShaderType.Vertex, new Filepath("vertex.glsl", FilepathType.ClassLoader));
         GLShader fragmentShader = new GLShader(ShaderType.Fragment, new Filepath("fragment.glsl", FilepathType.ClassLoader));
