@@ -4,6 +4,7 @@ import org.JEX.Core.IO.Resources.Model;
 import org.JEX.Logs.Log;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.Arrays;
 
@@ -20,6 +21,17 @@ public abstract class VertexObject {
         setModel(model);
     }
 
+    public static float[] vec4ToFloatArray(Vector4f[] data) {
+        float[] output = new float[data.length*4];
+        for (int i = 0; i < data.length; i++) {
+            output[i*4] = data[i].x();
+            output[i*4+1] = data[i].y();
+            output[i*4+2] = data[i].z();
+            output[i*4+3] = data[i].w();
+        }
+        return output;
+    }
+
     public void setModel(Model model){
         this.modelRef = model;
         verts = vec3ToFloatArray(model.getVerts());
@@ -30,7 +42,7 @@ public abstract class VertexObject {
         return modelRef;
     }
 
-    private float[] vec3ToFloatArray(Vector3f[] floats){
+    public static float[] vec3ToFloatArray(Vector3f[] floats){
         float[] output = new float[floats.length*3];
         for (int i = 0; i < floats.length; i++) {
             output[i*3] = floats[i].x();
@@ -40,7 +52,7 @@ public abstract class VertexObject {
         return output;
     }
 
-    private float[] vec2ToFloatArray(Vector2f[] floats){
+    public static float[] vec2ToFloatArray(Vector2f[] floats){
         float[] output = new float[floats.length*2];
         for (int i = 0; i < floats.length; i++) {
             output[i*2] = floats[i].x();

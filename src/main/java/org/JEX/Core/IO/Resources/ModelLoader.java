@@ -12,6 +12,7 @@ public abstract class ModelLoader {
     private static boolean loaded = false;
 
     private static ModelLoader10 loader10;
+    private static ModelLoader11 loader11;
 
     public static Model loadModel(Filepath filepath){
         if(!loaded) initLoaders();
@@ -38,7 +39,8 @@ public abstract class ModelLoader {
 
         System.arraycopy(lines, 1, lines, 0, lines.length-1);
         return switch (VERSION){
-            default -> loader10.loadModelAbstract(lines);
+            case 11 -> loader11.onLoad(lines);
+            default -> loader10.onLoad(lines);
         };
     }
 
@@ -46,6 +48,11 @@ public abstract class ModelLoader {
 
     private static void initLoaders(){
         loader10 = new ModelLoader10();
+        loader11 = new ModelLoader11();
         loaded = true;
+    }
+
+    protected Model onLoad(String[] lines){
+        return loadModelAbstract(lines);
     }
 }

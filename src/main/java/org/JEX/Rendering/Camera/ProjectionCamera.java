@@ -32,7 +32,7 @@ public class ProjectionCamera extends Camera{
     }
 
     private final Matrix4f viewMatrix = new Matrix4f();
-    private final Vector3f addedPos = new Vector3f();
+    private final Vector3f dest = new Vector3f();
     @Override
     public Matrix4f getViewMatrix() {
         Transform t = getTransform();
@@ -50,9 +50,9 @@ public class ProjectionCamera extends Camera{
         up = new Vector3f();
         right.cross(direction,up);
 
-        addedPos.set(t.position()).add(direction);
+        t.position().add(direction, dest);
 
-        viewMatrix.lookAt(new Vector3f().add(t.position()),addedPos,up);
+        viewMatrix.lookAt(new Vector3f().add(t.position()),dest,up);
         return viewMatrix;
     }
 
@@ -72,6 +72,42 @@ public class ProjectionCamera extends Camera{
                 .rotate(vec4ToQuat(t.rotation()))
                 .translate(-t.position().x,-t.position().y,-t.position().z).scale(t.scale());
         return modelMatrix;
+    }
+
+    public void setHorizAngle(float horizAngle) {
+        this.horizAngle = horizAngle;
+    }
+
+    public void setVertAngle(float vertAngle) {
+        this.vertAngle = vertAngle;
+    }
+
+    public void rotHorizAngle(float horizAngle) {
+        this.horizAngle += horizAngle;
+    }
+
+    public void rotVertAngle(float vertAngle) {
+        this.vertAngle += vertAngle;
+    }
+
+    public float getHorizAngle() {
+        return horizAngle;
+    }
+
+    public float getVertAngle() {
+        return vertAngle;
+    }
+
+    public Vector3f getRight() {
+        return right;
+    }
+
+    public Vector3f getUp() {
+        return up;
+    }
+
+    public Vector3f getForward() {
+        return forward;
     }
 
 }

@@ -35,6 +35,4 @@ public abstract class Camera extends Script {
         mvpMatrix.identity().mul(getProjectionMatrix()).mul(getViewMatrix()).mul(getModelMatrix(t));
         return mvpMatrix;
     }
-
-
 }

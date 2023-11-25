@@ -75,7 +75,7 @@ public class Transform {
     }
 
     public void scale(float x, float y, float z){
-        this.scale.add(x,y,z);
+        this.scale.mul(x,y,z);
     }
 
     public void add(Transform t){
